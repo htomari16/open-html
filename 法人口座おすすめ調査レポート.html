@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法人口座 おすすめ調査レポート 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f7f7f7;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    overflow-x: auto;
+    gap: 0;
+  }
+  nav .nav-title {
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-right: 24px;
+    opacity: 0.7;
+  }
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 0 14px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .report-header {
+    background: #fff;
+    border-top: 4px solid #1a1a1a;
+    padding: 32px 36px 28px;
+    margin-bottom: 32px;
+  }
+  .report-header .meta {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .report-header .subtitle {
+    font-size: 13px;
+    color: #555;
+  }
+
+  section {
+    margin-bottom: 40px;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    border-left: 4px solid #1a1a1a;
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+
+  .card {
+    background: #fff;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+
+  .box-summary {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .box-summary .box-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .box-summary p { font-size: 13px; line-height: 1.7; }
+
+  .box-highlight {
+    background: #f0f0f0;
+    border-left: 4px solid #1a1a1a;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .box-note {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .box-info {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+  }
+  thead tr { background: #e8e8e8; }
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:last-child td { border-bottom: none; }
+  .center { text-align: center; }
+  .bold { font-weight: 700; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-green  { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-blue   { background: #dbeafe; color: #1e40af; }
+  .badge-gray   { background: #f3f4f6; color: #374151; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+
+  .bank-card {
+    background: #fff;
+    border-top: 3px solid #1a1a1a;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .bank-card .bank-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .bank-card .bank-name { font-size: 16px; font-weight: 700; }
+  .bank-card .bank-category { font-size: 11px; color: #888; }
+  .bank-card .fee-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .bank-card .fee-highlight { font-size: 20px; font-weight: 700; }
+  .bank-card .fee-label { font-size: 11px; color: #888; margin-left: 4px; }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .pros, .cons {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+  .pros { background: #f0fdf4; border-left: 3px solid #22c55e; }
+  .cons { background: #fff7f7; border-left: 3px solid #ef4444; }
+  .pros h4, .cons h4 {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pros h4 { color: #16a34a; }
+  .cons h4 { color: #dc2626; }
+  .pros ul, .cons ul { padding-left: 14px; }
+  .pros li, .cons li { margin-bottom: 3px; }
+
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .conclusion-item {
+    background: #fff;
+    padding: 20px 24px;
+    border-top: 3px solid #1a1a1a;
+  }
+  .conclusion-item .ctype { font-size: 11px; color: #888; margin-bottom: 6px; }
+  .conclusion-item .cbank { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .conclusion-item .creason { font-size: 12px; color: #444; }
+
+  .verdict-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+  }
+
+  @media print {
+    nav { display: none; }
+    body { background: #fff; }
+    .container { padding: 20px; }
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  @media (max-width: 600px) {
+    .pros-cons { grid-template-columns: 1fr; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-title">法人口座リサーチ 2026</span>
+  <a href="#overview">概要</a>
+  <a href="#comparison">全行比較</a>
+  <a href="#mega">メガバンク3行</a>
+  <a href="#net">ネット銀行3行</a>
+  <a href="#chigi">地方銀行</a>
+  <a href="#conclusion">結論</a>
+</nav>
+
+<div class="container">
+
+  <div class="report-header">
+    <div class="meta">調査日：2026年6月26日　対象：法人口座（スタートアップ・中小企業向け）/ 7行+地銀カテゴリ</div>
+    <h1>法人口座 おすすめ調査レポート 2026年版</h1>
+    <div class="subtitle">新規顧客ガイドブック掲載用 ／ メガバンク3行 × ネット銀行3行 × 地方銀行 全比較</div>
+  </div>
+
+  <div class="box-summary">
+    <div class="box-label">CONCLUSION — 結論は変わらない</div>
+    <p>7行＋地銀を比較しても推奨は変わらず。メガバンクは<strong>三井住友銀行 Trunk</strong>（手数料145円・デジタル機能・スピード）、ネット銀行は<strong>GMOあおぞらネット銀行</strong>（手数料130円・Pay-easyダイレクト対応）の2口座体制が最適解。なお、みずほ銀行がネットバンキングで110円と安いが、デジタル機能・開設スピードでTrunkに劣る。楽天銀行は他行宛229円と意外に高くコスパ不良。地方銀行は維持費・審査・手数料すべてにおいてスタートアップには不向き。</p>
+  </div>
+
+  <!-- 概要 -->
+  <section id="overview">
+    <div class="section-title">調査の背景と評価軸</div>
+    <div class="card">
+      <p>法人口座選びは「①振込手数料コスト」「②Pay-easy（税金・社会保険납付）対応」「③UIと開設スピード」「④信頼性（融資・取引先印象）」の4軸で判断する。本レポートでは新規顧客ガイドブック掲載を前提に、<strong>メガバンク枠1行 × ネット銀行枠1行</strong>の最適組み合わせを全7行比較で検討する。</p>
+    </div>
+    <div class="box-info">
+      <strong>2口座体制が基本：</strong>メガバンクは融資・補助金・取引先信頼のために1口座確保。日常の振込・税金納付コストはネット銀行で最小化。この役割分担が鉄則。
+    </div>
+  </section>
+
+  <!-- 全行比較表 -->
+  <section id="comparison">
+    <div class="section-title">全7行 手数料・機能 比較表</div>
+    <table>
+      <thead>
+        <tr>
+          <th>銀行</th>
+          <th>種別</th>
+          <th>同行宛</th>
+          <th>他行宛（ネットIB）</th>
+          <th>Pay-easy</th>
+          <th>維持費</th>
+          <th>判定</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#f0fdf4;">
+          <td><strong>三井住友銀行 Trunk</strong></td>
+          <td><span class="badge badge-blue">メガバンク</span></td>
+          <td class="center">0円</td>
+          <td class="center bold">145円</td>
+          <td class="center"><span class="badge badge-green">対応</span></td>
+          <td class="center">無料</td>
+          <td><span class="badge badge-green">メガ推奨</span></td>
+        </tr>
+        <tr>
+          <td><strong>みずほ銀行</strong></td>
+          <td><span class="badge badge-blue">メガバンク</span></td>
+          <td class="center">0円</td>
+          <td class="center bold">110円 ※1</td>
+          <td class="center"><span class="badge badge-green">対応</span></td>
+          <td class="center">有料</td>
+          <td><span class="badge badge-yellow">参考</span></td>
+        </tr>
+        <tr>
+          <td><strong>三菱UFJ銀行</strong></td>
+          <td><span class="badge badge-blue">メガバンク</span></td>
+          <td class="center">0〜110円</td>
+          <td class="center bold">275円〜 ※2</td>
+          <td class="center"><span class="badge badge-green">対応</span></td>
+          <td class="center">有料</td>
+          <td><span class="badge badge-gray">融資目的のみ</span></td>
+        </tr>
+        <tr style="background:#f0fdf4;">
+          <td><strong>GMOあおぞらネット銀行</strong></td>
+          <td><span class="badge badge-gray">ネット銀行</span></td>
+          <td class="center">0円</td>
+          <td class="center bold">130円</td>
+          <td class="center"><span class="badge badge-green">ダイレクト対応</span></td>
+          <td class="center">無料</td>
+          <td><span class="badge badge-green">ネット推奨</span></td>
+        </tr>
+        <tr>
+          <td><strong>PayPay銀行</strong></td>
+          <td><span class="badge badge-gray">ネット銀行</span></td>
+          <td class="center">0円</td>
+          <td class="center bold">145円程度</td>
+          <td class="center"><span class="badge badge-yellow">ダイレクト非対応</span></td>
+          <td class="center">無料</td>
+          <td><span class="badge badge-yellow">次点</span></td>
+        </tr>
+        <tr>
+          <td><strong>楽天銀行</strong></td>
+          <td><span class="badge badge-gray">ネット銀行</span></td>
+          <td class="center">52円</td>
+          <td class="center bold">229円（3万以上）</td>
+          <td class="center"><span class="badge badge-yellow">ダイレクト非対応</span></td>
+          <td class="center">無料</td>
+          <td><span class="badge badge-red">非推奨</span></td>
+        </tr>
+        <tr>
+          <td><strong>地方銀行全般</strong></td>
+          <td><span class="badge badge-gray">地銀</span></td>
+          <td class="center">数百円</td>
+          <td class="center bold">440〜990円</td>
+          <td class="center"><span class="badge badge-gray">銀行による</span></td>
+          <td class="center">1,000〜3,000円/月</td>
+          <td><span class="badge badge-red">非推奨</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px; color:#888; margin-top:8px;">
+      ※1 みずほ銀行のインターネットバンキング（みずほダイレクト）一律110円。法人向けEB（みずほe-ビジネスサイト）の手数料体系は別途確認推奨。<br>
+      ※2 三菱UFJはATMカード利用で他行宛275円。IBの法人向け手数料は条件により異なる。
+    </p>
+
+    <div class="box-note" style="margin-top:16px;">
+      <strong>楽天銀行の罠：</strong>「ネット銀行＝安い」のイメージがあるが、楽天銀行の他行宛振込は3万円以上で229円とGMO（130円）の1.8倍。同行宛52円は安いが、法人は取引先への他行振込が多く実態コストが高くなりやすい。
+    </div>
+  </section>
+
+  <!-- メガバンク3行 -->
+  <section id="mega">
+    <div class="section-title">メガバンク3行 詳細</div>
+
+    <!-- 三井住友 -->
+    <div class="bank-card">
+      <div class="bank-header">
+        <span class="bank-name">三井住友銀行 Trunk</span>
+        <span class="bank-category">メガバンク / 法人向けデジタル総合金融サービス</span>
+        <span class="badge badge-green">メガバンク推奨</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">0円</span><span class="fee-label">同行宛</span></div>
+        <div><span class="fee-highlight">145円</span><span class="fee-label">他行宛（メガバンク最安）</span></div>
+        <div><span class="fee-highlight">0円</span><span class="fee-label">月額利用料</span></div>
+      </div>
+      <p style="margin-bottom:12px;">メガバンク唯一のネット銀行水準手数料。オンライン完結開設・請求書スキャン振込（2026年1月〜）・Pay-easy対応。スタートアップへの法人口座審査が3行の中で最も柔軟。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>メガバンク中で手数料最安（145円）</li>
+            <li>月額無料・オンライン開設</li>
+            <li>Pay-easy対応</li>
+            <li>請求書→振込自動変換（2026年〜）</li>
+            <li>融資・補助金・信頼性を確保</li>
+            <li>開設審査が3行で最もスピーディ</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>みずほ（110円）よりは手数料高め</li>
+            <li>ATMは別途手数料発生ケースあり</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- みずほ -->
+    <div class="bank-card">
+      <div class="bank-header">
+        <span class="bank-name">みずほ銀行</span>
+        <span class="bank-category">メガバンク / みずほe-ビジネスサイト</span>
+        <span class="badge badge-yellow">参考（手数料は安いが）</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">0円</span><span class="fee-label">同行宛</span></div>
+        <div><span class="fee-highlight">110円</span><span class="fee-label">他行宛IB（一律）</span></div>
+      </div>
+      <p style="margin-bottom:12px;">2025年1月より他行宛振込手数料を一律110円に引き下げ。数字だけ見るとTrunk（145円）より安い。ただし法人向けEBサービスの月額利用料や、デジタル機能の充実度・開設スピードではTrunkに劣る。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>他行宛110円はメガバンク中最安</li>
+            <li>Pay-easy対応</li>
+            <li>みずほグループの融資力</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>法人EB月額利用料が発生する可能性</li>
+            <li>デジタル機能がTrunkより劣る</li>
+            <li>開設審査・スピードでTrunkに劣る</li>
+            <li>「110円」は個人IB基準の可能性あり（要確認）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="box-note" style="margin-top:12px;">
+        <strong>総合評価：</strong>手数料の数字は優秀だが、月額EB利用料を含むトータルコストと開設のしやすさでTrunkに劣る。振込件数が月に100件超あり月額固定費を払っても110円の差（35円/件×100件=3,500円/月）で回収できるなら検討の余地あり。
+      </div>
+    </div>
+
+    <!-- UFJ -->
+    <div class="bank-card">
+      <div class="bank-header">
+        <span class="bank-name">三菱UFJ銀行</span>
+        <span class="bank-category">メガバンク / BizSTATION</span>
+        <span class="badge badge-gray">融資目的のみ推奨</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">275円〜</span><span class="fee-label">他行宛ATM（カード利用）</span></div>
+        <div><span class="fee-highlight">990円</span><span class="fee-label">窓口</span></div>
+      </div>
+      <p style="margin-bottom:12px;">資産規模・店舗網は3大メガバンク最大。融資力・企業信頼性では最強だが、手数料体系が複雑でネットIBの法人向け具体的手数料が不透明。スタートアップの日常口座としてはコスパ最悪。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>日本最大メガバンクの信頼性</li>
+            <li>大規模融資・グローバル対応</li>
+            <li>条件付きで月3回他行無料あり</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>手数料体系が複雑・不透明</li>
+            <li>窓口990円・ATM他行275円と高め</li>
+            <li>開設審査が最も厳しい</li>
+            <li>スタートアップの日常口座には不向き</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ネット銀行3行 -->
+  <section id="net">
+    <div class="section-title">ネット銀行3行 詳細</div>
+
+    <!-- GMO -->
+    <div class="bank-card">
+      <div class="bank-header">
+        <span class="bank-name">GMOあおぞらネット銀行</span>
+        <span class="bank-category">インターネット専業銀行</span>
+        <span class="badge badge-green">ネット銀行推奨</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">0円</span><span class="fee-label">同行宛</span></div>
+        <div><span class="fee-highlight">130円</span><span class="fee-label">他行宛（2026年5月〜 業界最安）</span></div>
+        <div><span class="fee-highlight">0円</span><span class="fee-label">口座維持費</span></div>
+      </div>
+      <p style="margin-bottom:12px;">2026年5月に他行宛130円へ値下げ、業界最安を更新。Pay-easyのダイレクト方式に対応しており、社会保険料・国税・地方税・経営セーフティ共済まで銀行サイトから一気通貫で完結。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>他行宛130円 ＝ 業界最安（2026年6月時点）</li>
+            <li>Pay-easyダイレクト方式対応</li>
+            <li>社保・国税・地方税・セーフティ共済を完結</li>
+            <li>最短翌営業日開設</li>
+            <li>口座維持費無料</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>融資・補助金申請には使えない</li>
+            <li>取引先によってネット銀行不可の場合あり</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PayPay -->
+    <div class="bank-card">
+      <div class="bank-header">
+        <span class="bank-name">PayPay銀行</span>
+        <span class="bank-category">インターネット専業銀行</span>
+        <span class="badge badge-yellow">次点</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">0円</span><span class="fee-label">同行宛</span></div>
+        <div><span class="fee-highlight">145円程度</span><span class="fee-label">他行宛（2025年5月改定後）</span></div>
+      </div>
+      <p style="margin-bottom:12px;">UIの評価が高く使いやすい。ただしPay-easyがダイレクト方式非対応のため、社会保険料・税金の納付には手間がかかる。手数料もGMOより高め。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>UI・スマホアプリが使いやすい</li>
+            <li>Pay-easy自体には対応（払込書方式）</li>
+            <li>法人向けワンタイム口座機能あり</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>Pay-easyダイレクト方式非対応</li>
+            <li>他行宛がGMOより高い（145円 vs 130円）</li>
+            <li>未利用口座管理手数料（2026年3月〜）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 楽天 -->
+    <div class="bank-card" style="border-top-color:#ef4444;">
+      <div class="bank-header">
+        <span class="bank-name">楽天銀行</span>
+        <span class="bank-category">インターネット専業銀行</span>
+        <span class="badge badge-red">非推奨</span>
+      </div>
+      <div class="fee-row">
+        <div><span class="fee-highlight">52円</span><span class="fee-label">同行宛（安い）</span></div>
+        <div><span class="fee-highlight">229円</span><span class="fee-label">他行宛3万以上（高い）</span></div>
+        <div><span class="fee-highlight">151円</span><span class="fee-label">他行宛3万未満</span></div>
+      </div>
+      <p style="margin-bottom:12px;">同行宛52円は魅力的だが、法人の多くは取引先への他行振込が主体。3万円以上の他行宛が229円はGMO（130円）の1.8倍で、ネット銀行の中でコスパ最悪。Pay-easyもダイレクト方式非対応。</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>メリット</h4>
+          <ul>
+            <li>楽天同行宛52円は最安水準</li>
+            <li>楽天グループ企業との取引なら有利</li>
+            <li>口座維持費無料</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>注意点</h4>
+          <ul>
+            <li>他行宛229円（3万以上）は割高</li>
+            <li>Pay-easyダイレクト非対応</li>
+            <li>楽天グループ外の取引には向かない</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 地方銀行 -->
+  <section id="chigi">
+    <div class="section-title">地方銀行・信用金庫（カテゴリ評価）</div>
+    <div class="card">
+      <p style="margin-bottom:12px;">地方銀行・信用金庫は一般的に<strong>スタートアップの日常口座としては不向き</strong>。ただし地域密着の融資関係構築という文脈では一定の意義がある。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>評価軸</th>
+            <th>地方銀行の実態</th>
+            <th>判定</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>振込手数料</td>
+            <td>他行宛440〜990円が相場。インターネットバンキングでも割高</td>
+            <td class="center"><span class="badge badge-red">×</span></td>
+          </tr>
+          <tr>
+            <td>月額維持費</td>
+            <td>法人向けネットバンキング月額1,000〜3,000円が多数</td>
+            <td class="center"><span class="badge badge-red">×</span></td>
+          </tr>
+          <tr>
+            <td>開設審査</td>
+            <td>設立間もない法人への審査が厳しいケース多い</td>
+            <td class="center"><span class="badge badge-yellow">△</span></td>
+          </tr>
+          <tr>
+            <td>Pay-easy対応</td>
+            <td>銀行によって対応状況が大きく異なる</td>
+            <td class="center"><span class="badge badge-yellow">△</span></td>
+          </tr>
+          <tr>
+            <td>融資・地域信用</td>
+            <td>地域密着の融資・信用金庫との関係構築には有効</td>
+            <td class="center"><span class="badge badge-green">○</span></td>
+          </tr>
+          <tr>
+            <td>UI・利便性</td>
+            <td>ネットバンキングのUIが古く使いにくい銀行が多い</td>
+            <td class="center"><span class="badge badge-red">×</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box-highlight">
+      <strong>地方銀行を使うべき唯一のケース：</strong>地元密着の事業で地域の信用金庫・地銀との融資関係を構築したい場合。日常口座としての利用は非推奨。信用金庫のメリットを活かす場合も、日常振込は別にネット銀行を開設すべき。
+    </div>
+  </section>
+
+  <!-- 結論 -->
+  <section id="conclusion">
+    <div class="section-title">結論・推奨組み合わせ（全行比較後も変わらず）</div>
+
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <div class="ctype">メガバンク枠</div>
+        <div class="cbank">三井住友銀行 Trunk</div>
+        <div class="creason">
+          みずほ（110円）より手数料は高いが、月額無料・デジタル機能・開設スピードの総合点で上回る。メガバンク3行の中でスタートアップが最初に開設すべき口座。
+        </div>
+      </div>
+      <div class="conclusion-item">
+        <div class="ctype">ネット銀行枠</div>
+        <div class="cbank">GMOあおぞらネット銀行</div>
+        <div class="creason">
+          他行宛130円（業界最安）＋Pay-easyダイレクト対応の組み合わせが最強。楽天（229円）・PayPay（145円）を大きく上回る。日常振込・税金・社会保険をここに集約。
+        </div>
+      </div>
+    </div>
+
+    <div class="box-summary" style="margin-top:24px;">
+      <div class="box-label">新規顧客へのアドバイス</div>
+      <p>
+        <strong>設立直後の優先順位：</strong>①まずTrunkで三井住友法人口座を開設（信頼性・融資の基盤）→ ②GMOあおぞらを日常振込・税金用に開設。この2口座体制が最適解。<br><br>
+        <strong>銀行ごとの使い分けイメージ：</strong><br>
+        ・Trunk：給与振込・補助金受取・取引先への支払（相手がメガバンク指定の場合）<br>
+        ・GMOあおぞら：日常の仕入先振込・社会保険料・税金・社会保険ダイレクト納付<br><br>
+        <strong>注意事項：</strong>設立直後が最も審査が通りやすい。売上・取引実績がないと審査が厳しくなるため、<strong>設立後できるだけ早く</strong>両行の開設を進めること。
+      </p>
+    </div>
+
+    <!-- 簡易早見表 -->
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:13px;">「どの銀行にすべき？」早見表</div>
+      <table>
+        <thead>
+          <tr><th>状況・優先事項</th><th>推奨銀行</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>まず1口座だけ開設したい（メガバンク）</td><td><strong>三井住友銀行 Trunk</strong></td></tr>
+          <tr><td>日常の振込コストを最小化したい</td><td><strong>GMOあおぞらネット銀行</strong></td></tr>
+          <tr><td>社会保険料・税金をネットで完結させたい</td><td><strong>GMOあおぞらネット銀行</strong>（ダイレクト対応）</td></tr>
+          <tr><td>大規模融資・グローバル取引がある</td><td><strong>三菱UFJ銀行</strong>（サブとして追加）</td></tr>
+          <tr><td>楽天グループとの取引が多い</td><td><strong>楽天銀行</strong>（限定的に有効）</td></tr>
+          <tr><td>地域密着の融資関係を構築したい</td><td><strong>地元信用金庫</strong>（サブとして追加）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box-info" style="margin-top:16px;">
+      <strong>2026年6月時点の情報です。</strong>手数料・キャンペーン内容は各行が随時変更するため、開設前に公式サイトで最新情報をご確認ください。特にみずほ銀行の法人EB手数料は公式サイトでの確認を推奨します。
+    </div>
+  </section>
+
+  <footer>
+    作成：SEVENRICH会計事務所 ／ 調査日：2026年6月26日 ／ 新規顧客ガイドブック掲載用リサーチ資料
+  </footer>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-48px 0px 0px 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

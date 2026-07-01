@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電子申告の達人 メッセージボックス運用改善提案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f7f7f7;
+  }
+  a { color: #1a1a1a; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 44px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  nav a:hover, nav a.active { background: #fff; color: #1a1a1a; }
+  nav .logo { color: #fff; font-weight: 700; font-size: 13px; margin-right: 12px; flex-shrink: 0; }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .page-header {
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+  }
+  .page-header .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; line-height: 1.4; }
+  .page-header .meta { font-size: 12px; color: #666; margin-top: 8px; }
+
+  section { margin-bottom: 48px; scroll-margin-top: 60px; }
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    border-left: 4px solid #1a1a1a;
+    padding-left: 12px;
+    margin-bottom: 20px;
+  }
+  h3 { font-size: 13px; font-weight: 700; margin: 24px 0 10px; }
+  p { margin-bottom: 10px; }
+
+  .box-summary {
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .box-summary .box-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #aaa; margin-bottom: 8px; }
+  .box-summary p { color: #f0f0f0; margin-bottom: 6px; }
+  .box-highlight {
+    background: #fff;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .box-highlight .box-title { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #888; margin-bottom: 8px; }
+  .box-note {
+    background: #fffde7;
+    border-left: 4px solid #f59e0b;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 16px;
+  }
+  .box-note .box-title { font-size: 11px; font-weight: 700; color: #b45309; margin-bottom: 6px; }
+  .box-info {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 16px;
+  }
+  .box-info .box-title { font-size: 11px; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
+  .box-danger {
+    background: #fff1f2;
+    border-left: 4px solid #ef4444;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 16px;
+  }
+  .box-danger .box-title { font-size: 11px; font-weight: 700; color: #b91c1c; margin-bottom: 6px; }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px; }
+  th { background: #e5e5e5; text-align: left; padding: 8px 12px; font-weight: 700; border: 1px solid #d0d0d0; }
+  td { padding: 8px 12px; border: 1px solid #d0d0d0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f9f9f9; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-right: 4px; }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-gray { background: #f3f4f6; color: #374151; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  /* 2カラムレイアウト */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .task-card {
+    background: #fff;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .task-card.task-a { border-top: 4px solid #3b82f6; }
+  .task-card.task-b { border-top: 4px solid #10b981; }
+  .task-card .task-label { font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .task-card .task-label.blue { color: #1d4ed8; }
+  .task-card .task-label.green { color: #065f46; }
+  .task-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .task-card p { font-size: 12px; color: #444; margin-bottom: 4px; }
+
+  /* ステップリスト */
+  .step-block {
+    margin-bottom: 32px;
+  }
+  .step-block .step-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px 6px 0 0;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .step-block .step-header.blue { background: #1d4ed8; }
+  .step-block .step-header.green { background: #059669; }
+  .step-list { list-style: none; counter-reset: step-counter; background: #fff; border: 1px solid #e5e5e5; border-top: none; border-radius: 0 0 6px 6px; padding: 8px 0; }
+  .step-list li {
+    counter-increment: step-counter;
+    position: relative;
+    padding: 10px 16px 10px 52px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-list.blue li::before { background: #1d4ed8; }
+  .step-list.green li::before { background: #059669; }
+  .step-sub {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+  }
+  .step-sub strong { color: #1a1a1a; }
+
+  /* フロー図 */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .flow-item {
+    flex: 1;
+    min-width: 140px;
+    background: #fff;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .flow-item .flow-num { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 4px; }
+  .flow-item .flow-who { display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-bottom: 6px; }
+  .flow-item .flow-who.staff { background: #dbeafe; color: #1e40af; }
+  .flow-item .flow-who.client { background: #d1fae5; color: #065f46; }
+  .flow-item .flow-who.tax { background: #fef3c7; color: #92400e; }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 18px;
+    color: #aaa;
+  }
+
+  .issue-list { list-style: none; }
+  .issue-list li {
+    padding: 10px 14px 10px 38px;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    position: relative;
+  }
+  .issue-list li::before {
+    content: "!";
+    position: absolute;
+    left: 12px;
+    top: 11px;
+    width: 18px;
+    height: 18px;
+    background: #f59e0b;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media print {
+    nav { display: none; }
+    body { background: #fff; }
+    .container { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="top-nav">
+  <span class="logo">達人 メッセージ運用</span>
+  <a href="#background">背景と課題</a>
+  <a href="#lock-reason">鍵マークの原因</a>
+  <a href="#structure">課題の整理</a>
+  <a href="#task-a">課題A：委任関係登録</a>
+  <a href="#task-b">課題B：受信設定</a>
+  <a href="#issues">注意事項</a>
+  <a href="#summary">まとめ</a>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="label">社内検討資料</div>
+    <h1>電子申告の達人<br>メッセージボックス運用改善提案</h1>
+    <div class="meta">作成日：2026年7月1日&nbsp;&nbsp;|&nbsp;&nbsp;参照：東京地方税理士会データ通信協同組合マニュアル（2019年2月）/ NTTデータ達人サポートページ</div>
+  </div>
+
+
+  <!-- 1. 背景と課題 -->
+  <section id="background">
+    <h2>1. 背景と課題</h2>
+
+    <div class="box-summary">
+      <div class="box-title">BACKGROUND</div>
+      <p>e-Taxのセキュリティ強化により、個人納税者のメッセージボックスへのアクセスには<strong>該当個人の電子証明書</strong>が必要となった。これにより、今まで直接取得できていた「申告のお知らせ」（申告完了通知）が、電子証明書なしでは第三者（スタッフ等）には取得できなくなっている。</p>
+    </div>
+
+    <h3>e-Tax WEB版でのログインが機能しない理由</h3>
+    <table>
+      <thead>
+        <tr><th>項目</th><th>状況</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>電子証明書の所在</td>
+          <td>東京の達人PCのみに格納されている（ICカードリーダー含む）</td>
+        </tr>
+        <tr>
+          <td>スタッフのe-Tax WEB版ログイン</td>
+          <td>電子証明書がないためログイン不可。個人納税者のメッセージは閲覧できない</td>
+        </tr>
+        <tr>
+          <td>e-Tax WEB版のフォルダ設定</td>
+          <td>設定しても電子証明書なしには鍵マークは解除されない。WEB版での対応は根本解決にならない</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-danger">
+      <div class="box-title">前回提案資料の訂正</div>
+      <p>前回のレポートはe-Tax WEB版のサブフォルダ設定を前提とした内容だったが、上記の理由から<strong>WEB版での対応では解決しない</strong>。今回は電子申告の達人側の設定による解決を提案する。</p>
+    </div>
+  </section>
+
+
+  <!-- 2. 鍵マークの原因 -->
+  <section id="lock-reason">
+    <h2>2. 受信フォルダの鍵マークが表示される原因</h2>
+
+    <div class="box-info">
+      <div class="box-title">原因</div>
+      <p>e-Taxのセキュリティ強化（平成30年11月施行）により、<strong>個人納税者のメッセージボックスにアクセスするには、該当個人の電子証明書（マイナンバーカード等）によるログインが必要</strong>になった。</p>
+      <p>今回見えている鍵マーク付きメッセージ（消費税申告・所得税申告）は、電子証明書でログインした場合にのみ閲覧できる状態になっており、利用者識別番号＋暗証番号のみでのログインでは内容が開けない。</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>メッセージ</th><th>鍵マーク</th><th>推定原因</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>消費税及び地方消費税申告（一般・個人）</td>
+          <td><span class="badge badge-red">あり</span></td>
+          <td>代表者個人の電子証明書が必要なメッセージ</td>
+        </tr>
+        <tr>
+          <td>所得税及び復興特別所得税申告</td>
+          <td><span class="badge badge-red">あり</span></td>
+          <td>同上</td>
+        </tr>
+        <tr>
+          <td>納付情報登録依頼</td>
+          <td><span class="badge badge-green">なし</span></td>
+          <td>電子証明書不要のメッセージ（利用者識別番号＋暗証番号で閲覧可）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-note">
+      <div class="box-title">補足</div>
+      <p>鍵マークは「パスワード付きフォルダに入れた」わけではなく、<strong>個人納税者のメッセージボックスそのものが電子証明書で保護されている</strong>ことを示している。これはe-Taxシステム全体の仕様変更によるものであり、フォルダ設定の問題ではない。</p>
+    </div>
+  </section>
+
+
+  <!-- 3. 課題の整理 -->
+  <section id="structure">
+    <h2>3. 解決すべき課題の整理</h2>
+
+    <p>今回対処すべき課題は、<strong>2つの独立した問題</strong>に分かれる。</p>
+
+    <div class="two-col">
+      <div class="task-card task-a">
+        <div class="task-label blue">課題 A</div>
+        <h4>お客様の「申告のお知らせ」を達人で取得できるようにしたい</h4>
+        <p>個人納税者のメッセージボックスへのアクセスには委任関係の登録が必要。委任登録することで、電子証明書なしでも達人経由で「申告のお知らせ」を受信できる。</p>
+        <p style="margin-top:8px;"><span class="badge badge-blue">解決策</span> 達人で委任関係の登録依頼を送信し、e-Tax上で承認</p>
+      </div>
+      <div class="task-card task-b">
+        <div class="task-label green">課題 B</div>
+        <h4>代表者個人の申告データをスタッフのダウンロード対象から除外したい</h4>
+        <p>課題Aの委任登録をした場合、代表者自身の個人申告も一緒にスタッフがダウンロードしてしまう可能性がある。これを防ぐ必要がある。</p>
+        <p style="margin-top:8px;"><span class="badge badge-green">解決策</span> 達人の受信用設定で「自己の申告データを含めない」にチェック</p>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <div class="box-title">重要：課題AとBはセットで対応する必要がある</div>
+      <p>課題Aだけ対応すると、代表者個人の申告通知もスタッフが取得できる状態になる。課題Bと合わせて実施することで、「お客様の申告通知は取得できる・代表者個人の申告は対象外」という理想の状態が実現する。</p>
+    </div>
+  </section>
+
+
+  <!-- 4. 課題A：委任関係の登録 -->
+  <section id="task-a">
+    <h2>4. 課題A の対応手順：委任関係の登録</h2>
+
+    <p>個人納税者（お客様）が税理士に対してe-Tax上で委任関係を登録することで、税理士（達人）側がお客様の「申告のお知らせ」を代わりに受信できるようになる。</p>
+
+    <h3>仕組みの概要</h3>
+    <div class="flow">
+      <div class="flow-item">
+        <div class="flow-num">準備</div>
+        <span class="flow-who staff">スタッフ</span>
+        <div>達人で顧問先の暗証番号・フリガナを登録</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">Step 1</div>
+        <span class="flow-who tax">代表者</span>
+        <div>e-Tax WEB版で税理士カナ氏名を登録</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">Step 2</div>
+        <span class="flow-who staff">スタッフ</span>
+        <div>達人から「委任関係の登録依頼」を送信</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">Step 3</div>
+        <span class="flow-who client">お客様</span>
+        <div>e-Taxで委任処理を実施</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">Step 4</div>
+        <span class="flow-who tax">代表者</span>
+        <div>e-Tax WEB版で委任を承認</div>
+      </div>
+    </div>
+
+    <h3>準備作業（電子申告の達人「送受信の設定」で実施）</h3>
+
+    <div class="step-block">
+      <div class="step-header blue">準備① 顧問契約が失効した顧問先を退避する</div>
+      <ol class="step-list blue">
+        <li>
+          電子申告の達人を起動し、【送受信の設定】をクリック
+          <div class="step-sub">「国税/地方税選択」が【国税】になっていることを確認し、【利用者一覧】タブを表示</div>
+        </li>
+        <li>
+          【法人個人区分】の列見出しをゆっくり2回クリックして並べ替え → 「個人」をまとめる
+        </li>
+        <li>
+          顧問契約が失効した利用者を選択し、【退避】ボタンをクリック
+          <div class="step-sub">退避は「一覧上から非表示にする」だけ。復元ボタンでいつでも戻せる</div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header blue">準備② 利用者識別番号の暗証番号を登録する</div>
+      <ol class="step-list blue">
+        <li>
+          【送受信の設定】→「国税/地方税選択」が【国税】→【共通設定（e-Tax登録情報）】タブをクリック
+        </li>
+        <li>
+          暗証番号欄に「保存済」の記載がない利用者を選択し、【設定】をクリック
+        </li>
+        <li>
+          「暗証番号設定」ウィンドウで以下を設定：
+          <div class="step-sub">a. 「e-Taxの暗証番号を更新する」→ <strong>チェックなし</strong></div>
+          <div class="step-sub">b. 「暗証番号をデータベースに保存する」→ <strong>チェックあり</strong></div>
+          <div class="step-sub">c. 「新暗証番号」欄2か所に現在の暗証番号を入力</div>
+          <div class="step-sub">d. 「確定時にe-Taxへのログインテストを行う」→ <strong>チェックあり</strong></div>
+        </li>
+        <li>【確定】をクリック → ログインに成功したら完了</li>
+      </ol>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header blue">準備③ 利用者のフリガナを登録する</div>
+      <ol class="step-list blue">
+        <li>【利用者一覧】タブで「フリガナ」が空欄の利用者を選択し、【利用者編集】をクリック</li>
+        <li>「フリガナ」欄に全角カタカナで入力し、【確定】をクリック</li>
+      </ol>
+    </div>
+
+    <h3>本作業：委任関係の登録（3ステップ）</h3>
+
+    <div class="step-block">
+      <div class="step-header blue">Step 1：e-Tax WEB版で税理士カナ氏名を登録する（代表者が実施）</div>
+      <ol class="step-list blue">
+        <li>
+          e-Tax WEB版（受付システム）に税理士の利用者識別番号・暗証番号でログイン
+          <div class="step-sub">東京の達人PCで電子証明書を使ってログイン、またはID＋暗証番号でログイン</div>
+        </li>
+        <li>メインメニュー「各種登録・変更」から「税理士カナ氏名（納税者表示用）の登録・変更」をクリック</li>
+        <li>全角カタカナで氏名を入力し、【登録・変更】をクリック → 更新確認画面が出たら完了</li>
+        <li>
+          この作業は変更がなければ<strong>1度実施するだけでよい</strong>
+        </li>
+      </ol>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header blue">Step 2：達人から「委任関係の登録依頼」を送信する（スタッフが実施）</div>
+      <ol class="step-list blue">
+        <li>
+          【電子申告の達人】→【送受信の設定】→「国税/地方税選択」が【国税】→【共通設定（e-Tax登録情報）】タブをクリック
+        </li>
+        <li>委任登録したい個人顧問先を選択し、【委任関係登録】をクリック</li>
+        <li>
+          「委任関係の登録」ウィンドウが表示される
+          <div class="step-sub">税理士の利用者識別番号・カナ氏名（納税者表示用フリガナ）が表示されていることを確認</div>
+        </li>
+        <li>【OK】をクリックして送信 → 依頼送信完了</li>
+        <li>
+          複数の顧問先を選択するには、【Shift】キーまたは【Ctrl】キーを押しながらクリックして一括選択可能
+        </li>
+      </ol>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header blue">Step 3：お客様に委任処理をしていただく</div>
+      <ol class="step-list blue">
+        <li>
+          お客様自身がe-Taxに自分の利用者識別番号・暗証番号でログイン
+          <div class="step-sub">マイナンバーカードがある場合はマイナンバーカードでのログインも可</div>
+        </li>
+        <li>メッセージボックスに届いている「委任関係の登録依頼」を開く</li>
+        <li>内容（税理士名）を確認し、委任処理を実施</li>
+      </ol>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header blue">Step 4：e-Tax WEB版で委任関係の承認を行う（代表者が実施）</div>
+      <ol class="step-list blue">
+        <li>e-Tax WEB版に税理士の利用者識別番号・暗証番号でログイン</li>
+        <li>メッセージボックスに届いている委任承認依頼を確認し、【承認】処理を実施</li>
+        <li>承認完了後、達人でその顧問先の「申告のお知らせ」が受信できるようになる</li>
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- 5. 課題B：受信用設定 -->
+  <section id="task-b">
+    <h2>5. 課題B の対応手順：達人の受信用設定</h2>
+
+    <p>委任関係の登録後、代表者自身の個人申告データも達人の受信対象に含まれてしまう。スタッフが自動ダウンロードする際に代表者個人の申告通知を取得しないよう、達人側で設定する。</p>
+
+    <div class="step-block">
+      <div class="step-header green">設定：「自己の申告データを含めない」を有効化する</div>
+      <ol class="step-list green">
+        <li>
+          電子申告の達人を起動し、【送受信の設定】をクリック
+        </li>
+        <li>
+          「国税/地方税選択」が【国税】になっていることを確認
+        </li>
+        <li>
+          【受信用設定】タブをクリック
+        </li>
+        <li>
+          「利用者種別」から【税理士】を選択し、税理士の利用者名を<strong>ダブルクリック</strong>
+          <div class="step-sub">「受信用設定」画面が開く</div>
+        </li>
+        <li>
+          <strong>「取得するメッセージに自己の申告データを含めない」にチェックを入れる</strong>
+        </li>
+        <li>
+          【確定】または【OK】をクリックして保存
+        </li>
+      </ol>
+    </div>
+
+    <div class="box-note">
+      <div class="box-title">この設定でできること・できないこと</div>
+      <p><strong>できること：</strong>スタッフが達人でメッセージ一括受信する際に、代表者個人の申告データ（消費税申告・所得税申告等）が自動的にダウンロード対象から除外される</p>
+      <p><strong>できないこと：</strong>代表者個人の申告データを完全に「存在しない状態」にはできない。達人の設定上は除外されるが、e-Tax WEB版に代表者がログインすれば引き続き閲覧可能</p>
+    </div>
+  </section>
+
+
+  <!-- 6. 注意事項 -->
+  <section id="issues">
+    <h2>6. 注意事項</h2>
+
+    <ul class="issue-list">
+      <li>
+        <strong>委任関係の登録はお客様の操作が必要</strong><br>
+        Step 3でお客様自身にe-Taxへのログインと委任処理をしていただく必要がある。お客様がe-Taxのログイン情報（利用者識別番号・暗証番号）を把握していない場合は事前確認が必要。
+      </li>
+      <li>
+        <strong>受信設定はPCごとの設定</strong><br>
+        課題Bの「自己の申告データを含めない」設定は、<strong>PCごとの設定</strong>であり、データベース全体への設定ではない。複数のPCで達人を使っている場合は、各PCで同様の設定が必要。
+      </li>
+      <li>
+        <strong>委任関係の登録有効期限</strong><br>
+        e-Tax上の委任関係登録には有効期限がある場合がある。顧問契約が終了した際は速やかに達人の利用者一覧から退避し、必要に応じてe-Tax上でも委任解除の手続きを行うこと。
+      </li>
+      <li>
+        <strong>代表者個人の申告通知の管理</strong><br>
+        課題Bの設定により代表者個人の申告データはスタッフの自動ダウンロード対象外になるが、代表者は引き続き東京の達人PCまたはe-Tax WEB版から確認できる。確認漏れが発生しないよう代表者が定期的にチェックすること。
+      </li>
+    </ul>
+  </section>
+
+
+  <!-- 7. まとめ -->
+  <section id="summary">
+    <h2>7. まとめ</h2>
+
+    <div class="box-highlight">
+      <div class="box-title">対応方針サマリー</div>
+      <table>
+        <thead>
+          <tr><th>課題</th><th>手段</th><th>実施者</th><th>難易度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A. お客様の申告通知を達人で受信する</td>
+            <td>e-Tax上で委任関係を登録</td>
+            <td>達人スタッフ＋お客様＋代表者</td>
+            <td><span class="badge badge-yellow">中（お客様の協力が必要）</span></td>
+          </tr>
+          <tr>
+            <td>B. 代表者個人の申告データを除外する</td>
+            <td>達人の受信用設定を変更</td>
+            <td>達人スタッフ（各PC）</td>
+            <td><span class="badge badge-green">低（設定のみ）</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box-summary">
+      <div class="box-title">上申の要旨</div>
+      <p>e-Taxのセキュリティ強化により、個人納税者のメッセージボックスには電子証明書が必要となった。e-Tax WEB版の設定変更では解決できないため、<strong>電子申告の達人の委任関係登録機能（課題A）と受信用設定（課題B）</strong>の2段階で対応することを提案する。</p>
+      <p>課題Bは達人の設定変更のみで完結するため即日対応可能。課題Aはお客様の協力が必要なため、個人確定申告の多い時期に向けて計画的に進めることを推奨する。</p>
+    </div>
+
+    <div class="box-info">
+      <div class="box-title">参考資料</div>
+      <p>・東京地方税理士会データ通信協同組合「個人納税者に対するメッセージボックスの取扱変更への対応」（2019年2月）</p>
+      <p>・NTTデータ達人サポート「e-Tax(国税) 税理士または税理士法人が自己の申告を行う場合の運用方法」</p>
+      <p>・NTTデータ達人サポート「税理士の個人用メッセージフォルダは作成できますか？」</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

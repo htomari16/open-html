@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>株式会社三雄 関係者相関図</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: #eef0f3; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+header {
+  background: #1a1a1a; color: #fff;
+  padding: 10px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+}
+header h1 { font-size: 14px; font-weight: 700; }
+header .meta { font-size: 11px; color: #999; }
+
+#legend {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  padding: 7px 18px; background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-size: 11px; flex-shrink: 0; align-items: center;
+}
+.li { display: flex; align-items: center; gap: 5px; color: #444; white-space: nowrap; }
+.lb { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; border: 1.5px solid rgba(0,0,0,0.18); }
+.lsep { color: #bbb; font-size: 14px; }
+
+#zoom-controls {
+  margin-left: auto; display: flex; gap: 6px; align-items: center;
+}
+#zoom-controls button {
+  background: #fff; border: 1px solid #ccc; border-radius: 4px;
+  padding: 2px 10px; font-size: 13px; cursor: pointer; line-height: 1.6;
+}
+#zoom-controls button:hover { background: #f0f0f0; }
+#zoom-label { font-size: 11px; color: #888; min-width: 36px; text-align: center; }
+
+#viewport {
+  flex: 1; overflow: auto; position: relative;
+  cursor: grab;
+}
+#viewport.grabbing { cursor: grabbing; }
+
+#canvas {
+  position: relative;
+  width: 1620px; height: 960px;
+  transform-origin: top left;
+  background: #f4f6fb;
+  background-image: radial-gradient(circle, #c8ccd8 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+svg#arrows {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 1; overflow: visible;
+}
+
+.node {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.07);
+  padding: 11px 13px 12px 13px;
+  z-index: 2;
+}
+.node-icon { font-size: 17px; margin-bottom: 4px; display: block; line-height: 1; }
+.node-name { font-size: 12.5px; font-weight: 700; color: #111; line-height: 1.45; }
+.node-desc { font-size: 10.5px; color: #555; margin-top: 5px; line-height: 1.65; }
+
+.tp-main { border-top: 4px solid #1d4ed8; }
+.tp-sra  { border-top: 4px solid #d97706; }
+.tp-bank { border-top: 4px solid #64748b; }
+.tp-adv  { border-top: 4px solid #9b59b6; }
+.tp-fam  { border-top: 4px solid #e74c3c; }
+.tp-co   { border-top: 4px solid #16a34a; }
+.tp-off  { border-top: 4px solid #94a3b8; opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>株式会社三雄　関係者相関図</h1>
+  <div class="meta">2026-07-01 現在</div>
+</header>
+
+<div id="legend">
+  <div class="li"><div class="lb" style="background:#dbeafe;border-color:#1d4ed8"></div>三雄（本体）</div>
+  <div class="li"><div class="lb" style="background:#fef3c7;border-color:#d97706"></div>SRA / 弊社顧問先</div>
+  <div class="li"><div class="lb" style="background:#f5f0fb;border-color:#9b59b6"></div>外部専門家</div>
+  <div class="li"><div class="lb" style="background:#fef2f2;border-color:#e74c3c"></div>家族・個人</div>
+  <div class="li"><div class="lb" style="background:#f0fdf4;border-color:#16a34a"></div>関連会社</div>
+  <div class="li"><div class="lb" style="background:#f1f5f9;border-color:#64748b"></div>金融機関</div>
+  <div class="li"><div class="lb" style="background:#f8fafc;border-color:#94a3b8"></div>接触少</div>
+  <span class="lsep">|</span>
+  <div class="li">── 通常の関係</div>
+  <div class="li" style="opacity:0.55">- - 補助的・過去の関係</div>
+  <div id="zoom-controls">
+    <button onclick="setZoom(scale-0.1)">－</button>
+    <span id="zoom-label">100%</span>
+    <button onclick="setZoom(scale+0.1)">＋</button>
+    <button onclick="setZoom(1)" style="font-size:11px">リセット</button>
+  </div>
+</div>
+
+<div id="viewport">
+  <div id="canvas">
+    <svg id="arrows"></svg>
+  </div>
+</div>
+
+<script>
+// ==================== ノードデータ ====================
+const NODES = [
+  { id:'sanyu',  x:610,  y:345,  w:265, type:'main',
+    icon:'🏢', name:'株式会社三雄',
+    desc:'代表取締役：山﨑 睦雄（面識あり）\n役員：野口（副社長）・坂上・星・吉本\n経理部長：木本さん　窓口：石川さん\nパート：鈴木・松本　工事事務：水戸' },
+
+  { id:'sra',    x:65,   y:200,  w:215, type:'sra',
+    icon:'👥', name:'SRAチーム',
+    desc:'担当：泊・熱方\n（セブンリッチ会計事務所）' },
+
+  { id:'bpio',   x:65,   y:430,  w:215, type:'sra',
+    icon:'👤', name:'BPIO 川島さん',
+    desc:'会計顧問' },
+
+  { id:'bank',   x:590,  y:65,   w:245, type:'bank',
+    icon:'🏦', name:'北國銀行',
+    desc:'佐竹さん（前任：前田さんの後任）\n山口さん' },
+
+  { id:'kokuze', x:65,   y:600,  w:215, type:'adv',
+    icon:'⚖️', name:'佐土原さん（国税OB）',
+    desc:'鹿児島在住\n税務調査のサポート' },
+
+  { id:'furuya', x:360,  y:785,  w:185, type:'off',
+    icon:'📄', name:'古屋税理士',
+    desc:'木本さんの旧来の顧問税理士\n現在は接触少' },
+
+  { id:'ask',    x:400,  y:640,  w:240, type:'co',
+    icon:'🏢', name:'株式会社 ASK',
+    desc:'経理代行。代表：木本さん（三雄経理部長兼任）\nKMK・ナインティーンの記帳担当' },
+
+  { id:'cmc',    x:730,  y:640,  w:260, type:'co',
+    icon:'🏗', name:'CMC（コンクリート）',
+    desc:'代表：星さん（三雄役員兼任）\nM&A予定（時期未定）・三雄への仕入れあり' },
+
+  { id:'mama',   x:1015, y:90,   w:230, type:'fam',
+    icon:'👩', name:'ママさん（山﨑社長のお母さま）',
+    desc:'上原さん資料持参→石川→SRA→佐藤税理士\n上原さん個人の納税サポート' },
+
+  { id:'imoto',  x:1015, y:295,  w:220, type:'fam',
+    icon:'👤', name:'山﨑社長の妹',
+    desc:'上原さんの妻' },
+
+  { id:'uehara', x:1015, y:490,  w:230, type:'fam',
+    icon:'👤', name:'上原さん（妹の夫）',
+    desc:'KMK・ナインティーン代表\n個人確申：佐藤税理士チーム\n米国資産：山田礼子さんが管理' },
+
+  { id:'sato',   x:1345, y:210,  w:215, type:'adv',
+    icon:'📄', name:'佐藤税理士チーム',
+    desc:'上原さん個人の確定申告担当' },
+
+  { id:'kmk',    x:1345, y:405,  w:200, type:'sra',
+    icon:'🏢', name:'株式会社 KMK',
+    desc:'代表：上原さん\nSRA顧問・ASK記帳代行' },
+
+  { id:'n19',    x:1345, y:575,  w:210, type:'sra',
+    icon:'🏢', name:'株式会社ナインティーン',
+    desc:'代表：上原さん\nSRA顧問・ASK記帳代行' },
+
+  { id:'yamada', x:1345, y:760,  w:230, type:'fam',
+    icon:'👩', name:'山田礼子さん',
+    desc:'上原さん 米国資産管理人\n荻窪に不動産所有（SRA税務顧問）' },
+];
+
+// ==================== エッジデータ ====================
+const EDGES = [
+  {f:'sra',    t:'sanyu',  lbl:'税務顧問',        clr:'#d97706', dash:false},
+  {f:'bpio',   t:'sanyu',  lbl:'会計顧問',        clr:'#9b59b6', dash:false},
+  {f:'bank',   t:'sanyu',  lbl:'融資・取引',       clr:'#64748b', dash:false},
+  {f:'kokuze', t:'sanyu',  lbl:'税務調査\nサポート', clr:'#9b59b6', dash:true},
+  {f:'furuya', t:'ask',    lbl:'顧問（過去）',     clr:'#94a3b8', dash:true},
+  {f:'sanyu',  t:'ask',    lbl:'経理部長が\n代表兼任', clr:'#16a34a', dash:false, bidir:true},
+  {f:'cmc',    t:'sanyu',  lbl:'仕入れ',          clr:'#16a34a', dash:false},
+  {f:'sanyu',  t:'cmc',    lbl:'M&A予定',         clr:'#e74c3c', dash:true},
+  {f:'ask',    t:'kmk',    lbl:'記帳代行',        clr:'#16a34a', dash:false},
+  {f:'ask',    t:'n19',    lbl:'記帳代行',        clr:'#16a34a', dash:false},
+  {f:'sra',    t:'kmk',    lbl:'SRA顧問',         clr:'#d97706', dash:true,  curve:-0.18},
+  {f:'sra',    t:'n19',    lbl:'SRA顧問',         clr:'#d97706', dash:true,  curve:-0.22},
+  {f:'sanyu',  t:'mama',   lbl:'親子',            clr:'#e74c3c', dash:false},
+  {f:'sanyu',  t:'imoto',  lbl:'兄妹',            clr:'#e74c3c', dash:false},
+  {f:'imoto',  t:'uehara', lbl:'夫婦',            clr:'#e74c3c', dash:false},
+  {f:'uehara', t:'kmk',    lbl:'代表',            clr:'#16a34a', dash:false},
+  {f:'uehara', t:'n19',    lbl:'代表',            clr:'#16a34a', dash:false},
+  {f:'mama',   t:'uehara', lbl:'個人納税\nサポート', clr:'#e74c3c', dash:true},
+  {f:'mama',   t:'sanyu',  lbl:'資料持参',         clr:'#64748b', dash:true,  curve:0.14},
+  {f:'sato',   t:'uehara', lbl:'個人確申',         clr:'#9b59b6', dash:false},
+  {f:'yamada', t:'uehara', lbl:'米国資産管理',     clr:'#64748b', dash:true},
+  {f:'sra',    t:'yamada', lbl:'SRA顧問\n（不動産）', clr:'#d97706', dash:true,  curve:-0.3},
+];
+
+// ==================== ノード描画 ====================
+const canvas  = document.getElementById('canvas');
+const nodeMap = {};
+
+NODES.forEach(n => {
+  nodeMap[n.id] = n;
+  const el = document.createElement('div');
+  el.className = `node tp-${n.type}`;
+  el.id = 'node-' + n.id;
+  el.style.cssText = `left:${n.x}px;top:${n.y}px;width:${n.w}px`;
+  el.innerHTML =
+    `<span class="node-icon">${n.icon}</span>` +
+    `<div class="node-name">${n.name}</div>` +
+    `<div class="node-desc">${n.desc.replace(/\n/g,'<br>')}</div>`;
+  canvas.appendChild(el);
+});
+
+// ==================== SVGエッジ描画 ====================
+const svg = document.getElementById('arrows');
+
+// arrowhead markers
+const COLORS = [...new Set(EDGES.map(e=>e.clr))];
+const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+COLORS.forEach(c => {
+  const id = c.replace('#','');
+  [[`arr-${id}`, '0 0,8 3,0 6', '7'], [`arrS-${id}`, '8 0,0 3,8 6', '1']].forEach(([mid, pts, refX]) => {
+    const mk = document.createElementNS('http://www.w3.org/2000/svg','marker');
+    mk.setAttribute('id', mid);
+    mk.setAttribute('markerWidth','8'); mk.setAttribute('markerHeight','6');
+    mk.setAttribute('refX', refX);    mk.setAttribute('refY','3');
+    mk.setAttribute('orient','auto');
+    const pl = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    pl.setAttribute('points', pts); pl.setAttribute('fill', c);
+    mk.appendChild(pl); defs.appendChild(mk);
+  });
+});
+svg.appendChild(defs);
+
+function boxOf(id) {
+  const n  = nodeMap[id];
+  const el = document.getElementById('node-' + id);
+  const h  = el ? el.offsetHeight : 120;
+  return { x:n.x, y:n.y, w:n.w, h, cx:n.x+n.w/2, cy:n.y+h/2 };
+}
+
+function connPts(fid, tid) {
+  const f = boxOf(fid), t = boxOf(tid);
+  const dx = t.cx - f.cx, dy = t.cy - f.cy;
+  const ax = Math.abs(dx), ay = Math.abs(dy);
+  let fp, tp;
+  if (ax > ay * 1.4) {
+    fp = dx>0 ? {x:f.x+f.w, y:f.cy} : {x:f.x,     y:f.cy};
+    tp = dx>0 ? {x:t.x,     y:t.cy} : {x:t.x+t.w, y:t.cy};
+  } else if (ay > ax * 1.4) {
+    fp = dy>0 ? {x:f.cx, y:f.y+f.h} : {x:f.cx, y:f.y};
+    tp = dy>0 ? {x:t.cx, y:t.y}     : {x:t.cx, y:t.y+t.h};
+  } else {
+    if (dx>0 && dy>0) { fp={x:f.x+f.w, y:f.y+f.h*0.65}; tp={x:t.cx-t.w*0.2, y:t.y}; }
+    else if (dx>0 && dy<0) { fp={x:f.x+f.w, y:f.y+f.h*0.35}; tp={x:t.cx-t.w*0.2, y:t.y+t.h}; }
+    else if (dx<0 && dy>0) { fp={x:f.x, y:f.y+f.h*0.65}; tp={x:t.cx+t.w*0.2, y:t.y}; }
+    else { fp={x:f.x, y:f.y+f.h*0.35}; tp={x:t.cx+t.w*0.2, y:t.y+t.h}; }
+  }
+  return {fp, tp};
+}
+
+function bezierPath(fp, tp, ca) {
+  const dx = tp.x-fp.x, dy = tp.y-fp.y;
+  const c  = ca || 0.08;
+  const cx1 = fp.x + dx*0.42 + dy*c;
+  const cy1 = fp.y + dy*0.10 - dx*c;
+  const cx2 = tp.x - dx*0.42 + dy*c;
+  const cy2 = tp.y - dy*0.10 - dx*c;
+  return `M ${fp.x} ${fp.y} C ${cx1} ${cy1} ${cx2} ${cy2} ${tp.x} ${tp.y}`;
+}
+
+function pillLabel(mx, my, text, clr) {
+  const lines = text.split('\n');
+  const cw = Math.max(...lines.map(l=>l.length));
+  const pw = cw*5.6+18, lh=14, ph=lines.length*lh+8;
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+
+  const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  Object.entries({x:mx-pw/2-2,y:my-ph/2-2,width:pw+4,height:ph+4,rx:(ph+4)/2,fill:'#fff',opacity:'0.88'})
+    .forEach(([k,v])=>bg.setAttribute(k,v));
+  g.appendChild(bg);
+
+  const rc = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  Object.entries({x:mx-pw/2,y:my-ph/2,width:pw,height:ph,rx:ph/2,fill:clr})
+    .forEach(([k,v])=>rc.setAttribute(k,v));
+  g.appendChild(rc);
+
+  lines.forEach((line,i)=>{
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    const yo = (i-(lines.length-1)/2)*lh;
+    Object.entries({x:mx, y:my+yo+4.5, 'text-anchor':'middle', fill:'#fff',
+      'font-size':'10', 'font-family':'Noto Sans JP,sans-serif', 'font-weight':'600'})
+      .forEach(([k,v])=>t.setAttribute(k,v));
+    t.textContent = line;
+    g.appendChild(t);
+  });
+  return g;
+}
+
+function drawEdges() {
+  EDGES.forEach(edge => {
+    const fn = nodeMap[edge.f], tn = nodeMap[edge.t];
+    if (!fn || !tn) return;
+    const {fp, tp} = connPts(edge.f, edge.t);
+    const d = bezierPath(fp, tp, edge.curve);
+    const cid = edge.clr.replace('#','');
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', edge.clr);
+    path.setAttribute('stroke-width', edge.dash ? '1.6' : '2.2');
+    path.setAttribute('fill','none');
+    if (edge.dash) path.setAttribute('stroke-dasharray','7 4');
+    path.setAttribute('marker-end',  `url(#arr-${cid})`);
+    if (edge.bidir) path.setAttribute('marker-start', `url(#arrS-${cid})`);
+    svg.appendChild(path);
+
+    // ラベルはパス中点に配置
+    const mx = (fp.x+tp.x)/2, my = (fp.y+tp.y)/2;
+    svg.appendChild(pillLabel(mx, my, edge.lbl, edge.clr));
+  });
+}
+
+// DOMレイアウト確定後に描画
+requestAnimationFrame(() => requestAnimationFrame(drawEdges));
+
+// ==================== ズーム ====================
+let scale = 1;
+function setZoom(s) {
+  scale = Math.min(1.6, Math.max(0.45, Math.round(s*10)/10));
+  canvas.style.transform = `scale(${scale})`;
+  document.getElementById('zoom-label').textContent = Math.round(scale*100)+'%';
+}
+
+// ==================== パン（ドラッグ） ====================
+const vp = document.getElementById('viewport');
+let drag = false, sx, sy, sl, st;
+vp.addEventListener('mousedown', e => {
+  if (e.button !== 0) return;
+  drag = true; sx = e.clientX; sy = e.clientY;
+  sl = vp.scrollLeft; st = vp.scrollTop;
+  vp.classList.add('grabbing');
+});
+document.addEventListener('mousemove', e => {
+  if (!drag) return;
+  vp.scrollLeft = sl - (e.clientX - sx);
+  vp.scrollTop  = st - (e.clientY - sy);
+});
+document.addEventListener('mouseup', () => { drag = false; vp.classList.remove('grabbing'); });
+</script>
+</body>
+</html>

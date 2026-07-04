@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>源泉徴収ルール整理 ｜ 合同会社さんかく企画</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f7f7f7;
+  }
+
+  /* ナビゲーション */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a1a1a;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav .nav-brand {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    padding: 14px 16px 14px 0;
+    border-right: 1px solid #444;
+    margin-right: 8px;
+  }
+  nav a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 14px 12px;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: #fff; }
+  nav a.active { color: #fff; border-bottom-color: #fff; }
+
+  /* レイアウト */
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ヘッダー */
+  .doc-header {
+    background: #fff;
+    border-radius: 4px;
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    border-top: 4px solid #1a1a1a;
+  }
+  .doc-header .meta {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .doc-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .doc-header .subtitle {
+    font-size: 12px;
+    color: #555;
+  }
+
+  /* セクション */
+  section {
+    background: #fff;
+    border-radius: 4px;
+    padding: 32px 40px;
+    margin-bottom: 24px;
+  }
+  section h2 {
+    font-size: 16px;
+    font-weight: 700;
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 24px 0 10px;
+    color: #1a1a1a;
+  }
+  section h3:first-of-type { margin-top: 0; }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ボックス */
+  .box-summary {
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .box-summary .box-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .box-summary ul { padding-left: 16px; }
+  .box-summary li { margin-bottom: 4px; font-size: 13px; }
+
+  .box-highlight {
+    background: #f7f7f7;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    padding: 18px 22px;
+    margin: 16px 0;
+  }
+
+  .box-note {
+    border-left: 4px solid #f0c040;
+    background: #fffbea;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .box-note .box-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #b8860b;
+    margin-bottom: 6px;
+  }
+
+  .box-info {
+    border-left: 4px solid #4a90d9;
+    background: #f0f6ff;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .box-info .box-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2060a0;
+    margin-bottom: 6px;
+  }
+
+  /* テーブル */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 12.5px;
+  }
+  thead th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  tbody tr:nth-child(odd) { background: #f7f7f7; }
+  tbody tr:nth-child(even) { background: #fff; }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: top;
+  }
+  tbody tr:hover { background: #eef2f8; }
+
+  /* バッジ */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-green { background: #e6f5ec; color: #2e7d52; }
+  .badge-yellow { background: #fff4d6; color: #9a6800; }
+  .badge-blue { background: #ddeeff; color: #1a5fa8; }
+  .badge-gray { background: #ebebeb; color: #555; }
+  .badge-red { background: #fdecea; color: #b22222; }
+
+  /* フロー */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 20px 0;
+    align-items: stretch;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 140px;
+    background: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    padding: 16px 14px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    z-index: 1;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-step .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: #888;
+    margin-bottom: 6px;
+  }
+  .flow-step .step-label {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .flow-step .step-sub {
+    font-size: 11px;
+    color: #666;
+  }
+
+  /* 計算例 */
+  .calc-box {
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-size: 12.5px;
+  }
+  .calc-box .calc-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #ddd;
+  }
+  .calc-box .calc-row:last-child { border-bottom: none; }
+  .calc-box .calc-row.total {
+    font-weight: 700;
+    border-top: 2px solid #1a1a1a;
+    border-bottom: none;
+    margin-top: 4px;
+    padding-top: 10px;
+  }
+  .calc-box .calc-row .label { color: #444; }
+  .calc-box .calc-row .value { font-weight: 500; }
+
+  /* 印刷 */
+  @media print {
+    body { background: #fff; }
+    nav { display: none; }
+    .container { padding: 20px; }
+    section { break-inside: avoid; }
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <span class="nav-brand">さんかく企画 / 税務</span>
+  <a href="#overview">源泉とは</a>
+  <a href="#who">義務者</a>
+  <a href="#target">対象一覧</a>
+  <a href="#apply">具体的取引</a>
+</nav>
+
+<div class="container">
+
+  <!-- ドキュメントヘッダー -->
+  <div class="doc-header">
+    <div class="meta">合同会社さんかく企画 ｜ 税務整理資料 ｜ 2026年7月</div>
+    <h1>源泉徴収ルール整理<br>― 対象となる支払い・ならない支払いの見分け方 ―</h1>
+  </div>
+
+  <!-- 1. 源泉徴収とは -->
+  <section id="overview">
+    <h2>1. 源泉徴収とは</h2>
+
+    <p>
+      源泉徴収とは、<strong>お金を支払う側（支払者）が、支払時にあらかじめ所得税を差し引いて国に納める制度</strong>です。
+      受け取る側（受取人）が自分で確定申告して税金を納める手間を省き、税金の取りはぐれを防ぐ目的で設けられています。
+    </p>
+
+    <div class="box-highlight">
+      <strong>イメージ</strong><br>
+      報酬を払う → 税金を引いた残りだけを支払先に渡す → 引いた分を税務署に納める<br>
+      <br>
+      例：原稿料 100,000円 → 源泉税（10.21%）10,210円 を差し引く → 89,790円 を支払う → 10,210円 を翌月10日までに税務署へ
+    </div>
+
+    <div class="box-info">
+      <div class="box-label">ポイント</div>
+      「20.42%」「10.21%」という数字は <strong>所得税（20% or 10%）＋復興特別所得税（2.1%上乗せ）</strong> の合計です。
+      復興特別所得税は2013年〜2037年の時限措置として加算されています。
+      <ul style="margin-top:8px; padding-left:16px;">
+        <li>10%の所得税 → 復興税込で <strong>10.21%</strong></li>
+        <li>20%の所得税 → 復興税込で <strong>20.42%</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. 誰が義務者か -->
+  <section id="who">
+    <h2>2. さんかく企画は源泉徴収義務者か</h2>
+
+    <p>
+      源泉徴収する義務を負う者を「<strong>源泉徴収義務者</strong>」といいます。
+      以下のいずれかに該当する場合、支払う時に源泉徴収が必要です。
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>支払者の区分</th>
+          <th>源泉徴収義務</th>
+          <th>備考</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>法人</strong>（株式会社・合同会社等）</td>
+          <td><span class="badge badge-red">原則あり</span></td>
+          <td>規模・業種を問わず義務者</td>
+        </tr>
+        <tr>
+          <td>個人事業主（従業員あり）</td>
+          <td><span class="badge badge-yellow">あり</span></td>
+          <td>常時雇用なら給与の源泉義務</td>
+        </tr>
+        <tr>
+          <td>個人（一般消費者）</td>
+          <td><span class="badge badge-gray">なし</span></td>
+          <td>個人が個人に払う場合は不要</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-summary">
+      <div class="box-title">さんかく企画の位置づけ</div>
+      <ul>
+        <li>合同会社さんかく企画は<strong>法人</strong>のため、源泉徴収義務者に該当する</li>
+        <li>支払いの内容・相手が居住者か非居住者かによって、源泉が必要かどうかが変わる</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. 対象一覧 -->
+  <section id="target">
+    <h2>3. 源泉徴収の対象となる支払い・ならない支払い</h2>
+
+    <p>
+      すべての支払いが源泉徴収の対象になるわけではありません。
+      法律（所得税法204条等）で定められた種類の支払いだけが対象です。
+    </p>
+
+    <h3>対象となる主な支払い（所得税法204条・212条）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="28%">支払いの種類</th>
+          <th width="20%">税率</th>
+          <th>具体例・注意点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>特定の報酬・料金</strong><br>（居住者個人へ）</td>
+          <td>
+            100万円以下：<strong>10.21%</strong><br>
+            超過分：<strong>20.42%</strong>
+          </td>
+          <td>
+            原稿料・挿画・作曲・著作・<strong>デザイン</strong>の報酬、
+            弁護士・税理士・公認会計士等の士業報酬、
+            芸能（映画・テレビ・演劇等）の出演・演出報酬 など<br>
+            <span class="badge badge-yellow" style="margin-top:6px; display:inline-block;">個人への業務委託でも、内容が上記に該当しないものは対象外</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>非居住者への支払い全般</strong></td>
+          <td><strong>20.42%</strong></td>
+          <td>
+            海外在住の個人・外国法人への報酬・賃料・使用料等（国内源泉所得）。
+            居住者への支払いでは不要なケースも、非居住者になると対象になる<br>
+            <span class="badge badge-red" style="margin-top:6px; display:inline-block;">さんかく企画に関係あり（あおちゃんへのロゴ制作料）</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>給与・賞与</strong></td>
+          <td>所得税の<br>源泉徴収税額表による</td>
+          <td>
+            従業員・役員（社員）に支払う給与・賞与
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>対象とならない主な支払い</h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="28%">支払いの種類</th>
+          <th width="20%">源泉</th>
+          <th>理由・注意点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>居住者個人への不動産賃料</td>
+          <td><span class="badge badge-green">不要</span></td>
+          <td>
+            不動産の賃料は、法律上の源泉徴収が必要なお金のリストに含まれていない。
+            国内在住の個人家主への賃料は源泉不要（家主が確定申告で精算）
+          </td>
+        </tr>
+        <tr>
+          <td>法人への外注費・委託費</td>
+          <td><span class="badge badge-green">不要</span></td>
+          <td>支払先が法人（株式会社・合同会社等）であれば源泉不要</td>
+        </tr>
+        <tr>
+          <td>一般的な業務委託料<br>（居住者個人へ・特定役務以外）</td>
+          <td><span class="badge badge-green">不要</span></td>
+          <td>
+            清掃・運搬・一般事務等、204条に列挙されていない役務への対価は源泉不要
+          </td>
+        </tr>
+        <tr>
+          <td>物品購入代金</td>
+          <td><span class="badge badge-green">不要</span></td>
+          <td>モノの売買は源泉対象外（今回の原本買取50,000円も同様）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-note">
+      <div class="box-label">判断のポイント</div>
+      まず「<strong>支払先が日本に住んでいるか、海外に住んでいるか</strong>」で考える。海外在住（非居住者）であれば幅広く源泉対象になる。
+      日本在住の人への支払いは、<strong>デザイン・原稿・士業報酬など決まった種類の報酬に限って</strong>源泉が必要。
+      「個人への支払い＝すべて源泉必要」ではなく、何のための支払いかによる。
+    </div>
+  </section>
+
+  <!-- 4. 具体的取引への適用 -->
+  <section id="apply">
+    <h2>4. 今回の取引への当てはめ｜ロゴ制作（LA在住カリグラファーへの支払い）</h2>
+
+    <h3>取引の概要</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>支払先</td>
+          <td>Aoi Yamaguchi（山口葵）／ロサンゼルス在住カリグラファー</td>
+        </tr>
+        <tr>
+          <td>支払内容</td>
+          <td>「亀のお宿」ロゴの揮毫・デザイン制作費・使用権</td>
+        </tr>
+        <tr>
+          <td>支払先の区分</td>
+          <td><span class="badge badge-yellow">非居住者</span>　日本国内に1年以上の居所がない者</td>
+        </tr>
+        <tr>
+          <td>源泉の要否</td>
+          <td><span class="badge badge-red">源泉徴収が必要</span></td>
+        </tr>
+        <tr>
+          <td>適用税率</td>
+          <td><strong>20.42%</strong>（非居住者への報酬：所得税20%＋復興特別所得税0.42%）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-info">
+      <div class="box-label">なぜ非居住者への支払いに源泉徴収が必要なのか</div>
+      日本の会社（さんかく企画）が、日本のビジネスのために海外在住の人に報酬を支払う場合、
+      その収入は「日本で稼いだお金」として日本の税金がかかります。<br>
+      ただし、海外在住の人は日本で確定申告できないため、<strong>支払う側（さんかく企画）が税金を天引きして日本の税務署に納める</strong>のがルールです。
+    </div>
+
+    <h3>今回の見積書の金額内訳と計算</h3>
+
+    <div class="calc-box">
+      <div style="font-weight:700; margin-bottom:10px; font-size:12px;">支払金額の内訳</div>
+      <div class="calc-row"><span class="label">デザイン費＋使用権費－値引き（課税対象額）</span><span class="value">300,000円</span></div>
+      <div class="calc-row"><span class="label">原本買取（物品購入 ／ 源泉対象外）</span><span class="value">50,000円</span></div>
+      <div class="calc-row"><span class="label">合計額</span><span class="value">350,000円</span></div>
+      <div class="calc-row"><span class="label">源泉徴収税額（300,000円 × 20.42%）</span><span class="value">▲ 61,260円</span></div>
+      <div class="calc-row total"><span class="label">あおちゃんへの実際の振込額</span><span class="value">288,740円</span></div>
+    </div>
+
+    <div class="box-note">
+      <div class="box-label">「割引になるのでは？」という疑問について</div>
+      <strong>割引ではありません。</strong><br>
+      さんかく企画が差し引く61,260円は「あおちゃんの税金を代わりに払っている」お金です。
+      あおちゃんへの振込が288,740円に減るのは、61,260円分をさんかく企画が日本の税務署に納めるためです。<br><br>
+      あおちゃん目線では「350,000円分の仕事をした → うち61,260円は日本で税金として払った → 手元に288,740円が来た」という状態で、
+      受取総額350,000円は変わりません。支払調書を渡せば、アメリカでの確定申告時に外国税額控除として使えます。
+    </div>
+
+    <h3>原本買取（50,000円）が源泉対象外になる理由</h3>
+    <p>
+      原本買取とは、カリグラフィーの原画・現物を購入する代金です。
+      これは<strong>「モノ（著作物の原本）の売買」</strong>であり、報酬・役務の対価ではないため源泉徴収の対象外になります。
+      デザイン・使用権のような「サービス・権利の対価」とは区別して計算します。
+    </p>
+
+    <h3>支払方法（クレジットカード・ドル建て）について</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>論点</th>
+          <th>対応</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ドル建て支払い</td>
+          <td>クレジットカードでドルのまま払ってOK。あとで支払日のTTSレート等で円換算して経費計上する</td>
+        </tr>
+        <tr>
+          <td>源泉税の計算基準</td>
+          <td>円換算後の金額に対して20.42%を計算する（今回は見積書がすでに円建てのため円ベースで計算済み）</td>
+        </tr>
+        <tr>
+          <td>源泉税の納付通貨</td>
+          <td>日本の税務署への納付は<strong>日本円</strong>で行う</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>対応の選択肢（今回はスポット依頼のため通常控除を推奨）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="20%">方法</th>
+          <th width="15%">税率</th>
+          <th>概要</th>
+          <th width="18%">今回の適否</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>通常控除</strong></td>
+          <td>20.42%</td>
+          <td>見積書通りに源泉を差し引いて振込む。最もシンプル</td>
+          <td><span class="badge badge-green">推奨（今回）</span></td>
+        </tr>
+        <tr>
+          <td><strong>租税条約の適用</strong></td>
+          <td>0%（免除）</td>
+          <td>日米租税条約に基づき源泉免除を申請。先方と書類のやりとりが発生し工数がかかる</td>
+          <td><span class="badge badge-gray">継続取引なら検討</span></td>
+        </tr>
+        <tr>
+          <td><strong>グロスアップ</strong></td>
+          <td>20.42%</td>
+          <td>「あおちゃんの手取りを350,000円にする」ために逆算して総額を増やして払う方法。さんかく企画の負担増</td>
+          <td><span class="badge badge-gray">今回は不要</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-summary">
+      <div class="box-title">今回の取引のまとめ</div>
+      <ul>
+        <li>あおちゃんはLA在住 → <strong>非居住者</strong> → 20.42%の源泉徴収が必要</li>
+        <li>課税対象はデザイン費等の300,000円のみ。原本買取50,000円は対象外</li>
+        <li>さんかく企画はあおちゃんに<strong>288,740円を振込</strong>み、<strong>61,260円を税務署へ納付</strong>する</li>
+        <li>差し引かれた61,260円はあおちゃんの税金を代わりに払っているだけ。「割引」ではない</li>
+        <li>支払調書を発行してあおちゃんに渡すことで、アメリカ側での申告手続きに使ってもらえる</li>
+      </ul>
+    </div>
+  </section>
+
+
+
+</div>
+
+<script>
+  // スティッキーナビ アクティブハイライト
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) {
+          active.classList.add('active');
+          active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

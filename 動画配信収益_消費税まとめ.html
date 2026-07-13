@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画配信収益の消費税課否区分 ― クライアント向け整理</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f7f7f7;
+    }
+
+    /* ナビゲーション */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1a1a1a;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+      print-color-adjust: exact;
+    }
+    nav a {
+      display: inline-block;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 11.5px;
+      padding: 12px 10px;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+    nav a:hover, nav a.active {
+      color: #fff;
+      border-bottom-color: #fff;
+    }
+
+    /* レイアウト */
+    .wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ヘッダー */
+    .page-header {
+      background: #fff;
+      border-left: 5px solid #1a1a1a;
+      padding: 28px 28px 24px;
+      margin-bottom: 32px;
+    }
+    .page-header .tag {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 8px;
+      letter-spacing: .05em;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .page-header .sub {
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* セクション */
+    section {
+      background: #fff;
+      margin-bottom: 28px;
+      padding: 28px;
+    }
+    section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    section h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin: 20px 0 10px;
+      color: #1a1a1a;
+    }
+    p { margin-bottom: 10px; }
+    ul, ol { padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 5px; }
+
+    /* ボックス */
+    .box-summary {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .box-summary .title {
+      font-size: 11px;
+      letter-spacing: .1em;
+      opacity: .6;
+      margin-bottom: 6px;
+    }
+    .box-summary p { margin-bottom: 0; }
+
+    .box-highlight {
+      background: #f0f0f0;
+      border-left: 4px solid #1a1a1a;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+
+    .box-note {
+      background: #fffbe6;
+      border-left: 4px solid #f0b400;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .box-note .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #b08000;
+      margin-bottom: 4px;
+      letter-spacing: .08em;
+    }
+
+    .box-info {
+      background: #f0f6ff;
+      border-left: 4px solid #2563eb;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .box-info .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1d4ed8;
+      margin-bottom: 4px;
+      letter-spacing: .08em;
+    }
+
+    /* テーブル */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+    }
+    th {
+      background: #e8e8e8;
+      text-align: left;
+      padding: 9px 12px;
+      font-weight: 700;
+      border: 1px solid #ccc;
+    }
+    td {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f9f9f9; }
+
+    /* バッジ */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .badge-green  { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-blue   { background: #dbeafe; color: #1e3a8a; }
+    .badge-gray   { background: #e5e7eb; color: #374151; }
+    .badge-red    { background: #fee2e2; color: #991b1b; }
+
+    /* 争点対比 */
+    .vs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .vs-box {
+      border: 1px solid #ddd;
+      padding: 16px;
+    }
+    .vs-box .vs-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .vs-box.plaintiff .vs-label { color: #1d4ed8; }
+    .vs-box.authority .vs-label { color: #b91c1c; }
+
+    /* フロー図 */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+    .flow-box {
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .flow-arrow {
+      color: #888;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .flow-box.highlight-box {
+      background: #1a1a1a;
+      color: #fff;
+      border-color: #1a1a1a;
+    }
+
+    /* 印刷対応 */
+    @media print {
+      nav { display: none; }
+      body { background: #fff; font-size: 11px; }
+      .wrapper { padding: 0; max-width: 100%; }
+      section { box-shadow: none; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#overview">事案概要</a>
+  <a href="#income-types">収益の種類</a>
+  <a href="#dispute">争点</a>
+  <a href="#ruling">審判所の判断</a>
+  <a href="#issues">判断への疑問</a>
+  <a href="#practice">実務上の注意点</a>
+  <a href="#talk">クライアントへの話し方</a>
+</nav>
+
+<div class="wrapper">
+
+  <div class="page-header">
+    <div class="tag">税務通信DB 3908号 ／ 2026年7月13日 ／ 消費税・裁決</div>
+    <h1>動画配信収益の消費税課否区分<br>― YouTuber事案：なぜ「国内取引」とされたのか</h1>
+    <div class="sub">
+      出典：実例から学ぶ税務の核心 第120回（大阪勉強会グループ）／ 裁決：令和7年1月8日 東裁（諸）令6第101号<br>
+      ※ 現在、納税者が東京地裁に提訴中（R7.7.2提訴）。裁決は確定していない。
+    </div>
+  </div>
+
+  <!-- 1. 事案概要 -->
+  <section id="overview">
+    <h2>1. 事案概要</h2>
+
+    <div class="box-summary">
+      <div class="title">ポイント</div>
+      <p>YouTube動画配信収益は通常「国外取引」として消費税の課税対象外となる。しかし今回の裁決では、MCN（YouTuber事務所）との専属プロデュース契約があったことを理由に「国内取引」として課税対象とされた。</p>
+    </div>
+
+    <h3>登場人物の整理</h3>
+    <table>
+      <thead>
+        <tr><th>役割</th><th>本件での実態（推定）</th><th>所在</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>請求人（YouTuber）</td>
+          <td>動画を制作・投稿して収益を得ていたクリエイター</td>
+          <td>国内</td>
+        </tr>
+        <tr>
+          <td>本件国外法人（Google）</td>
+          <td>YouTubeプラットフォームを運営</td>
+          <td>米国（国外）</td>
+        </tr>
+        <tr>
+          <td>本件法人（MCN）</td>
+          <td>YouTuber事務所。請求人と専属プロデュース契約を締結し、<br>収益の代理受領・チャンネル管理等を行っていた</td>
+          <td>国内</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>時系列</h3>
+    <table>
+      <thead>
+        <tr><th>時期</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>平成26年2月</td><td>請求人がYouTubeパートナープログラムに参加・承認</td></tr>
+        <tr><td>平成29年12月</td><td>MCN（本件法人）と専属プロデュース契約締結</td></tr>
+        <tr><td>令和2年4月20日</td><td>専属プロデュース契約を合意解除</td></tr>
+        <tr><td>令和2年12月期</td><td>消費税確定申告（当初は課税売上として申告）</td></tr>
+        <tr><td>令和3年4月30日</td><td>「国外取引」として課税対象外への更正の請求を提出</td></tr>
+        <tr><td>　　〃</td><td>原処分庁が「更正すべき理由なし」と通知処分</td></tr>
+        <tr><td>令和7年1月8日</td><td>国税不服審判所が請求棄却の裁決（国内取引と認定）</td></tr>
+        <tr><td>令和7年7月2日</td><td>納税者が東京地裁へ提訴（現在係争中）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. 収益の種類 -->
+  <section id="income-types">
+    <h2>2. YouTubeの収益の種類と消費税の基本的な考え方</h2>
+
+    <div class="box-info">
+      <div class="label">大前提</div>
+      <p>YouTubeやTikTokの動画配信収益は、<strong>通常「電気通信利用役務の提供」として国外取引に該当し、消費税の課税対象外</strong>となることが多い。ただし、今回の裁決が示すように、契約・取引の実態次第では異なる結論になりうる。</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>収益の種類</th><th>内容</th><th>裁決文中の対応</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>広告収益</td>
+          <td>動画再生数等に応じた広告料（アフィリエイトリンク含む）</td>
+          <td>（イ）</td>
+        </tr>
+        <tr>
+          <td>YouTube Premium収益</td>
+          <td>Premiumユーザーの視聴に応じ一定以上の視聴数達成で配分</td>
+          <td>（ロ）定期購入</td>
+        </tr>
+        <tr>
+          <td>スーパーチャット・スーパーサンクス等</td>
+          <td>ライブ配信・動画へのファンからの投げ銭・スタンプ</td>
+          <td>（ハ）（ホ）</td>
+        </tr>
+        <tr>
+          <td>チャンネルメンバーシップ</td>
+          <td>視聴者が月額料金を支払い特典を受けるファン会費</td>
+          <td>（ニ）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MCN（マルチチャンネルネットワーク）とは</h3>
+    <p>YouTubeが公認する仲介サービスプロバイダ。事務所として複数のYouTuberチャンネルと提携し、以下のサポートを提供する。</p>
+    <ul>
+      <li>動画制作支援・企業とのタイアッププロモーション</li>
+      <li>視聴者開拓・ノウハウ提供</li>
+      <li>デジタル著作権管理</li>
+      <li><strong>Googleからの収益受取（代理受領）・分配</strong></li>
+    </ul>
+    <div class="box-note">
+      <div class="label">注意</div>
+      <p>MCNへの加入はYouTubeが許容している選択肢だが、加入が必須ではない。MCNに加入すると、Googleからの収益はMCNが一旦受領し、手数料等を差し引いてクリエイターに振り込む形が一般的。</p>
+    </div>
+  </section>
+
+  <!-- 3. 争点 -->
+  <section id="dispute">
+    <h2>3. 争点の対比</h2>
+
+    <p>今回の核心は「本件収入が誰に対して行った役務提供の対価か」という点。</p>
+
+    <div class="vs-grid">
+      <div class="vs-box plaintiff">
+        <div class="vs-label">請求人（YouTuber）の主張</div>
+        <p>収入は<strong>国外法人（Google）</strong>に対して行った<strong>電気通信利用役務の提供の対価</strong>。</p>
+        <p>MCNは収益を「代理受領」しているにすぎず、取引の当事者はGoogleと自分。</p>
+        <p>∴ 国外取引 → <span class="badge badge-green">課税対象外</span></p>
+      </div>
+      <div class="vs-box authority">
+        <div class="vs-label">原処分庁（税務署）の主張</div>
+        <p>収入は<strong>国内法人（MCN）</strong>に対して行った<strong>役務提供の対価</strong>。</p>
+        <p>MCNとの専属プロデュース契約に基づき、クリエイター活動の報酬としてMCNから支払われたもの。</p>
+        <p>∴ 国内取引 → <span class="badge badge-red">課税対象（課税売上）</span></p>
+      </div>
+    </div>
+
+    <div class="box-highlight">
+      <strong>取引フローのイメージ（請求人の主張）</strong>
+      <div class="flow" style="margin-top:10px;">
+        <div class="flow-box highlight-box">Google<br>（国外）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">MCN<br>（代理受領）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box highlight-box">YouTuber<br>（請求人）</div>
+      </div>
+      <p style="margin-top:8px; font-size:12px; color:#555;">MCNはエージェントとして代わりに受け取っているだけ。本当の対価の流れはGoogle→YouTuber。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>取引フローのイメージ（審判所・税務署の認定）</strong>
+      <div class="flow" style="margin-top:10px;">
+        <div class="flow-box highlight-box">Google<br>（国外）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box highlight-box">MCN<br>（国内・主体）</div>
+        <div class="flow-arrow">外注↓</div>
+        <div class="flow-box">YouTuber<br>（請求人）</div>
+      </div>
+      <p style="margin-top:8px; font-size:12px; color:#555;">MCNがGoogleから収益を得て、その一部をクリエイター活動の外注報酬としてYouTuberに支払った。</p>
+    </div>
+  </section>
+
+  <!-- 4. 審判所の判断 -->
+  <section id="ruling">
+    <h2>4. 審判所の判断（裁決の要旨）</h2>
+
+    <div class="box-summary">
+      <div class="title">結論</div>
+      <p>請求人の本件収入は、MCN（国内法人）に対して行った役務提供の対価と認められ、国外法人（Google）に対して行った電気通信利用役務の提供の対価とは認められない。∴ 国内取引 → 課税対象。</p>
+    </div>
+
+    <h3>審判所の主な認定理由</h3>
+    <ol>
+      <li><strong>MCN管理下での活動</strong><br>専属プロデュース契約に基づき、請求人のクリエイター活動はMCNの管理下で行われていたと認められる。MCNは請求人の動画を承認なく削除できる権限も持っていた。</li>
+      <li><strong>動画のMCN→Googleへの利用許諾</strong><br>専属契約期間中、請求人投稿動画はMCNからGoogleへと利用許諾されていたと認められる（MCNが管理責任を負っていた）。</li>
+      <li><strong>MCNが独立した経済主体</strong><br>MCNはGoogleとYouTuberの間に独立した経済主体として存在・活動し、Googleから収益全額を受領していた。</li>
+      <li><strong>「外注」関係の認定</strong><br>以上を総合すると、本件収入はMCNが外注したクリエイター活動に対する報酬として請求人に支払われたものと認めるのが相当。</li>
+    </ol>
+
+    <div class="box-note">
+      <div class="label">注意</div>
+      <p>契約書で「<strong>代理受領</strong>」と明記されていたにもかかわらず、審判所はこれを認めなかった。「実態として支配関係があるからMCNが主体」という論理で代理受領を否定。</p>
+    </div>
+  </section>
+
+  <!-- 5. 判断への疑問 -->
+  <section id="issues">
+    <h2>5. この裁決への疑問点（著者・実務家の指摘）</h2>
+
+    <div class="box-info">
+      <div class="label">現在係争中</div>
+      <p>この裁決の論理に疑問を持った専門家からの批判が多く、納税者（請求人）は令和7年7月2日に東京地裁へ提訴している。裁決は確定ではない。</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>疑問点</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GoogleとYouTuberの直接契約を無視</td>
+          <td>請求人はYouTubeパートナープログラムに参加しており、Google（国外）との直接の契約関係が残っているのに、この点が裁決では一切触れられていない。MCN契約がGoogle・YouTuber間の契約関係を「上書き」できるのかという疑問。</td>
+        </tr>
+        <tr>
+          <td>代理受領を否定する論理が粗い</td>
+          <td>「支配関係があるから主体」という論理は飛躍が大きい。契約書で代理受領と明記し、預り金で処理していた実態があるのに否定されると、他の多くの事案にも影響しかねない。</td>
+        </tr>
+        <tr>
+          <td>事実認定の局所性</td>
+          <td>MCNとYouTuberの関係だけに焦点を当て、全体の取引構造を見ていないとの批判。消費税の課税客体は「取引」のはずなのに、支配実態で置き換えるのは問題。</td>
+        </tr>
+        <tr>
+          <td>専属契約違反のYouTuberなら結論が変わる可能性</td>
+          <td>もし専属契約に違反して事務所の指示に従わなかったYouTuberなら、この裁決の論理では国外取引になりうる。これは不合理。</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. 実務上の注意点 -->
+  <section id="practice">
+    <h2>6. 実務上の注意点</h2>
+
+    <h3>消費税の基本的な判断フロー（YouTuber・動画クリエイター）</h3>
+
+    <table>
+      <thead>
+        <tr><th>状況</th><th>通常の判断</th><th>今回の裁決が与える影響</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MCN（事務所）なし<br>Googleと直接契約のみ</td>
+          <td><span class="badge badge-green">国外取引・課税対象外</span><br>電気通信利用役務の提供</td>
+          <td>影響なし（従来通りの処理でOK）</td>
+        </tr>
+        <tr>
+          <td>MCN（事務所）あり<br>専属プロデュース契約を締結</td>
+          <td>通常は同じく課税対象外が多い</td>
+          <td><span class="badge badge-yellow">要注意</span><br>今回の裁決では国内取引と認定された。契約・実態の精査が必要。</td>
+        </tr>
+        <tr>
+          <td>TikTok等 他プラットフォーム</td>
+          <td>プラットフォームの取引形態次第で異なる（断言不可）</td>
+          <td>同様のリスクがある可能性</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>確認すべき事項（事務所契約ありの場合）</h3>
+    <div class="box-highlight">
+      <ol>
+        <li><strong>契約書の内容</strong>：代理受領か・外注か。どちらの建付けになっているか。</li>
+        <li><strong>取引の実態</strong>：契約書通りに運用されているか（実態が乖離していると否認リスク）。</li>
+        <li><strong>Googleとの直接契約の有無・内容</strong>：パートナープログラム規約を確認。</li>
+        <li><strong>収益の流れ</strong>：事務所が全額受領→手数料差引→振込か、それともGoogleから直接入金か。</li>
+        <li><strong>過去の申告処理</strong>：課税売上として計上していた場合、更正の請求ができるか否かも要検討（本件のように更正請求が認められないリスクあり）。</li>
+      </ol>
+    </div>
+
+    <div class="box-note">
+      <div class="label">追加の注意点</div>
+      <p>この裁決の射程は動画配信に限らない。<strong>「代理受領」と契約書に記載しても、実態の支配関係次第で主体性を否定される</strong>という論理は、他の取引（コンサル業・フリーランス事務所所属等）にも影響しうる。現在係争中のため今後の地裁判決を注視すること。</p>
+    </div>
+  </section>
+
+  <!-- 7. クライアントへの話し方 -->
+  <section id="talk">
+    <h2>7. クライアントへの話し方（想定Q&A）</h2>
+
+    <h3>Q. YouTubeの収益って消費税はかかるんですか？</h3>
+    <div class="box-highlight">
+      <p><strong>A.</strong> 基本的には「国外取引」として消費税の対象外になることが多いです。YouTubeを運営しているのがアメリカのGoogleなので、国境をまたぐ取引として扱われるためです。</p>
+      <p>ただし、今年1月の裁決で「事務所（MCN）に所属していたYouTuberの収益は国内取引として課税対象」とされた事案が出ました。現在、納税者が地裁で争っていますので最終的な結論はまだ出ていませんが、<strong>事務所に所属している方は要注意</strong>です。</p>
+    </div>
+
+    <h3>Q. 事務所なしなら大丈夫ですか？</h3>
+    <div class="box-highlight">
+      <p><strong>A.</strong> 事務所（MCN）なしでGoogleと直接契約している場合は、従来通り国外取引として課税対象外で問題ないと考えています。念のため、契約の実態を確認させてください。</p>
+    </div>
+
+    <h3>Q. 事務所に所属していて、これまで課税対象外で申告してきました。修正が必要ですか？</h3>
+    <div class="box-highlight">
+      <p><strong>A.</strong> まず契約書と取引の実態を一緒に確認しましょう。今回の裁決はあくまで特定の事案について出たもので、すべての事務所所属クリエイターに当てはまるわけではありません。ただ、<strong>裁決では「代理受領」と書いてあっても認められなかった</strong>ので、契約書の形式だけで安心はできません。実態ベースで精査する必要があります。</p>
+    </div>
+
+    <h3>Q. スーパーチャット（投げ銭）は消費税どうなりますか？</h3>
+    <div class="box-highlight">
+      <p><strong>A.</strong> 今回の裁決でも、スーパーチャット・チャンネルメンバーシップ等はすべて広告収益と同様に扱われています。個別に課税・非課税を分けるのではなく、<strong>取引の相手方（Google vs MCN）が誰か</strong>という観点で判断されます。</p>
+    </div>
+
+    <div class="box-note">
+      <div class="label">現時点でのスタンス</div>
+      <p>この裁決は現在地裁で係争中であり、今後逆転判決が出る可能性もある。クライアントへの説明は「リスクを認識しながら契約実態を確認する」スタンスで対応し、断定的な表現は避けること。</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // スティッキーナビ自動ハイライト
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>

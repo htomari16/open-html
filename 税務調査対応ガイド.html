@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>税務調査 対応ガイド</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f7f7f7;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 48px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    nav .nav-title { font-weight: 700; font-size: 13px; color: #ccc; margin-right: 8px; flex-shrink: 0; }
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 12px;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+      flex-shrink: 0;
+    }
+    nav a:hover, nav a.active { color: #fff; border-bottom-color: #fff; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .page-header { margin-bottom: 40px; }
+    .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .page-header .meta { font-size: 12px; color: #666; display: flex; gap: 16px; flex-wrap: wrap; }
+    .page-header .meta span::before { content: '▍'; color: #ccc; margin-right: 4px; }
+
+    section { margin-bottom: 48px; }
+    section h2 {
+      font-size: 17px;
+      font-weight: 700;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 20px;
+    }
+    section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      color: #1a1a1a;
+    }
+
+    .box-summary {
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .box-summary p { color: #ddd; line-height: 1.8; }
+    .box-highlight {
+      background: #fff;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+    .box-note {
+      background: #fffbe6;
+      border-left: 4px solid #f0b429;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .box-info {
+      background: #f0f7ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; background: #fff; }
+    thead th {
+      background: #e8e8e8;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      border: 1px solid #d0d0d0;
+    }
+    tbody td {
+      padding: 8px 12px;
+      border: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) td { background: #f9f9f9; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-gray { background: #f3f4f6; color: #374151; }
+
+    .flow {
+      display: flex;
+      gap: 0;
+      margin: 16px 0;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1;
+      min-width: 120px;
+      background: #fff;
+      border: 1.5px solid #d0d0d0;
+      padding: 12px 14px;
+      position: relative;
+      text-align: center;
+    }
+    .flow-step:not(:last-child)::after {
+      content: '▶';
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 12px;
+      z-index: 1;
+    }
+    .flow-step .step-num { font-size: 10px; color: #999; font-weight: 700; }
+    .flow-step .step-name { font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .flow-step .step-note { font-size: 11px; color: #666; margin-top: 4px; }
+
+    .checklist { list-style: none; margin: 8px 0; }
+    .checklist li {
+      padding: 6px 0 6px 24px;
+      position: relative;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .checklist li::before {
+      content: '□';
+      position: absolute;
+      left: 0;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .do-dont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 12px 0;
+    }
+    .do-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .dont-box {
+      background: #fff1f2;
+      border: 1.5px solid #fca5a5;
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .do-box h4 { color: #15803d; font-size: 13px; margin-bottom: 8px; }
+    .dont-box h4 { color: #b91c1c; font-size: 13px; margin-bottom: 8px; }
+    .do-box ul, .dont-box ul { list-style: none; }
+    .do-box ul li::before { content: 'v '; color: #16a34a; font-weight: 700; }
+    .dont-box ul li::before { content: 'x '; color: #dc2626; font-weight: 700; }
+    .do-box ul li, .dont-box ul li { font-size: 12px; line-height: 1.9; }
+
+    @media (max-width: 600px) {
+      .do-dont { grid-template-columns: 1fr; }
+      .flow { flex-direction: column; }
+      .flow-step:not(:last-child)::after { display: none; }
+    }
+
+    @media print {
+      nav { display: none; }
+      body { background: #fff; }
+      .container { padding: 20px; }
+      .box-summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-title">税務調査対応ガイド</span>
+  <a href="#overview">全体像</a>
+  <a href="#principles">基本原則</a>
+  <a href="#before">事前準備</a>
+  <a href="#during">調査当日</a>
+  <a href="#after">調査後</a>
+  <a href="#mindset">心構え</a>
+  <a href="#qa">よくある場面</a>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>税務調査 対応ガイド</h1>
+    <div class="meta">
+      <span>作成日：2026年7月16日</span>
+      <span>対象：初回対応メンバー向け</span>
+      <span>種別：法人税・消費税の実地調査（任意調査）を想定</span>
+    </div>
+  </div>
+
+  <!-- 概要 -->
+  <section id="overview">
+    <h2>税務調査とは何か</h2>
+    <div class="box-summary">
+      <p>税務調査は、申告内容が正しいかどうかを国税当局が確認する手続き。「怖いもの」ではなく、<strong>準備と対話で結果が大きく変わるもの</strong>。初めて担当する場合でも、事前準備・当日の立ち回り・調査後の対応の3段階を押さえれば十分に乗り越えられる。</p>
+    </div>
+
+    <h3>調査の種類と位置づけ</h3>
+    <table>
+      <thead>
+        <tr><th>種類</th><th>概要</th><th>頻度・備考</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-blue">任意調査</span></td>
+          <td>事前通知あり。税務署員が事業所に来訪し帳簿・書類を確認する。法人の通常調査はほぼこれ</td>
+          <td>数年に1度。通知〜調査まで2〜4週間程度</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">強制調査（査察）</span></td>
+          <td>令状を持ったマルサによる強制捜索。悪質な脱税が対象</td>
+          <td>一般顧問先ではほぼ無関係</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-gray">書面添付制度</span></td>
+          <td>税理士が申告内容を担保する書面を添付。意見聴取で調査省略も</td>
+          <td>添付あり → 調査前に税理士への意見聴取が必須</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flow" style="margin-top: 20px;">
+      <div class="flow-step">
+        <div class="step-num">STEP 1</div>
+        <div class="step-name">事前通知</div>
+        <div class="step-note">税務署から電話<br>日程・調査官名</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">STEP 2</div>
+        <div class="step-name">日程調整</div>
+        <div class="step-note">こちらから提案可<br>2〜4週間後が目安</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">STEP 3</div>
+        <div class="step-name">事前準備</div>
+        <div class="step-note">書類整備<br>重点論点洗出し</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">STEP 4</div>
+        <div class="step-name">実地調査</div>
+        <div class="step-note">通常1〜2日<br>（大規模は複数日）</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">STEP 5</div>
+        <div class="step-name">指摘事項確認</div>
+        <div class="step-note">口頭説明 or<br>修正申告の協議</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">STEP 6</div>
+        <div class="step-name">終了手続</div>
+        <div class="step-note">是認 or 修正申告<br>更正・決定</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 基本原則 -->
+  <section id="principles">
+    <h2>税務調査で最も重要な考え方</h2>
+    <div class="box-summary">
+      <p>どんな局面でも、この6原則に立ち返ることで判断が安定する。個別の状況に関わらず、この軸は変わらない。</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th>#</th><th>原則</th><th>実務上の意味</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center; font-weight:700;">①</td>
+          <td><strong>事実を隠さない</strong></td>
+          <td>不利な事実でも、正確に説明することが税理士の責務。隠蔽は重加算税リスクに直結する</td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">②</td>
+          <td><strong>推測で答えない</strong></td>
+          <td>「たぶん〜だったと思います」は後から覆せない。わからないことは必ず確認してから回答する</td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">③</td>
+          <td><strong>その場で約束しない</strong></td>
+          <td>修正申告・追加資料の提出など、重要な判断はその場で決めない。必ず持ち帰って確認する</td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">④</td>
+          <td><strong>根拠資料で説明する</strong></td>
+          <td>口頭の説明より書類が強い。証拠を示しながら話すことで説明の信頼性が上がる</td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">⑤</td>
+          <td><strong>迷ったら持ち帰る</strong></td>
+          <td>その場の判断が間違えると後から修正が難しい。時間をもらって上位者に相談するのが最善</td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">⑥</td>
+          <td><strong>調査官も法律に基づいて調査している</strong></td>
+          <td>調査官の質問や要求には法的根拠がある。感情的に対立せず、法令・事実・証拠を軸に対話する</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 事前準備 -->
+  <section id="before">
+    <h2>事前準備</h2>
+
+    <div class="box-info">
+      <strong>時間配分の目安</strong>：調査通知から当日まで約2〜3週間。最初の1週間で書類収集・仕分け、残りで論点整理と想定QAを作る。
+    </div>
+
+    <h3>① 調査対象期間の確認と書類整備</h3>
+    <table>
+      <thead>
+        <tr><th>書類カテゴリ</th><th>具体的な書類</th><th>チェックポイント</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>申告書類</td>
+          <td>法人税・消費税申告書、勘定科目内訳書、決算書（B/S・P/L）</td>
+          <td>調査対象年度分をすべて揃える（通常直近3期）</td>
+        </tr>
+        <tr>
+          <td>帳簿・伝票</td>
+          <td>総勘定元帳、補助元帳、仕訳帳</td>
+          <td>電子データも印刷可能な状態にしておく</td>
+        </tr>
+        <tr>
+          <td>証憑書類</td>
+          <td>領収書、請求書（受領・発行両方）、契約書、銀行通帳</td>
+          <td>月別・科目別に整理。欠落がある場合は先に把握しておく</td>
+        </tr>
+        <tr>
+          <td>給与関係</td>
+          <td>給与台帳、源泉徴収簿、年末調整書類、役員議事録</td>
+          <td>役員報酬変更時の議事録は必須</td>
+        </tr>
+        <tr>
+          <td>固定資産</td>
+          <td>固定資産台帳、取得時の請求書・契約書</td>
+          <td>少額減価償却・一括償却との整合確認</td>
+        </tr>
+        <tr>
+          <td>その他</td>
+          <td>会社規程（旅費規程・慶弔規程等）、株主名簿</td>
+          <td>旅費日当支給がある場合は旅費規程を必ず用意</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>② 論点の先読み（重点チェック科目）</h3>
+    <div class="box-highlight">
+      <p>税務署が必ずチェックする「鉄板論点」は業種を問わずほぼ共通。事前に自分でフラグを立てておき、根拠書類と説明を準備する。</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th>論点</th><th>確認ポイント</th><th>よくある指摘</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>役員報酬</td>
+          <td>定期同額か / 期首改定のタイミング / 議事録の日付</td>
+          <td>議事録なし・変更のタイミングがズレている</td>
+        </tr>
+        <tr>
+          <td>交際費</td>
+          <td>飲食費の参加者・目的記載 / 社内飲食との区分</td>
+          <td>領収書裏に何も書いていない / 相手先不明</td>
+        </tr>
+        <tr>
+          <td>旅費・出張費</td>
+          <td>日当根拠（旅費規程）/ 出張報告書の有無</td>
+          <td>規程なしで高額日当 → 役員報酬認定リスク</td>
+        </tr>
+        <tr>
+          <td>外注費・業務委託</td>
+          <td>契約書の有無 / 実態（雇用関係との区分）/ 源泉徴収</td>
+          <td>給与認定 / 源泉徴収漏れ</td>
+        </tr>
+        <tr>
+          <td>棚卸・原価</td>
+          <td>期末棚卸の計算根拠 / 期ズレの可能性</td>
+          <td>在庫計上漏れ / 原価の前後期ズレ</td>
+        </tr>
+        <tr>
+          <td>消費税区分</td>
+          <td>課税・非課税・不課税の区分 / 仕入税額控除の根拠</td>
+          <td>非課税売上の課税漏れ / インボイス対応の不備</td>
+        </tr>
+        <tr>
+          <td>代表者関連</td>
+          <td>代表者への立替金・仮払残高 / 役員貸付金の利息</td>
+          <td>残高精算なし → 役員賞与認定 / 利息計上漏れ</td>
+        </tr>
+        <tr>
+          <td>保険料</td>
+          <td>損金算入根拠 / 解約返戻金の処理</td>
+          <td>全額損金処理の誤適用 / 返戻金の益金計上漏れ</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>③ 事前確認チェックリスト</h3>
+    <ul class="checklist">
+      <li>会計データ・申告書を自分で一通り読み、変動が大きい科目・前年比で異常な科目をリストアップ</li>
+      <li>クライアントに確認が必要な事項を早めに連絡し、回答を得ておく（当日に「わかりません」は禁物）</li>
+      <li>税務署に開示する書類と、手元にだけ置く書類を分けて整理</li>
+      <li>調査当日に誰が対応するか（担当者・パートナー・クライアント担当者）の役割分担を明確に</li>
+      <li>調査室・席の配置を確認（スペース確保・PCアクセス環境）</li>
+      <li>想定QA（調査官から聞かれそうな質問と回答）を紙にまとめておく</li>
+    </ul>
+
+    <div class="box-note">
+      <strong>重要</strong>：「怪しいかもしれない」と思った箇所は、必ず事前に上位者と相談する。当日初めて気づいて動揺するより、先に把握して説明を準備しておくほうが格段に良い。
+    </div>
+  </section>
+
+  <!-- 調査当日 -->
+  <section id="during">
+    <h2>調査当日の対応</h2>
+
+    <h3>当日の流れ</h3>
+    <table>
+      <thead>
+        <tr><th>時間帯</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>調査開始前</td><td>調査官の身分証（国税調査官証票）を確認。あいさつ程度の雑談で関係をやわらかくする</td></tr>
+        <tr><td>午前</td><td>調査官による概況聴取（会社の事業内容・役員・取引先の概要）→ 帳簿・証憑の閲覧開始</td></tr>
+        <tr><td>午後</td><td>追加資料の提示依頼・個別質問 → 終わり際に「気になった点」を口頭で伝えられることが多い</td></tr>
+        <tr><td>調査後</td><td>当日中に論点メモを作成。調査官から「確認させてください」と言われた書類はリスト化して記録</td></tr>
+      </tbody>
+    </table>
+
+    <h3>やること・やらないこと</h3>
+    <div class="do-dont">
+      <div class="do-box">
+        <h4>DO - やること・言うこと</h4>
+        <ul>
+          <li>聞かれたことに、簡潔に答える</li>
+          <li>わからないことは「確認してからご回答します」</li>
+          <li>書類がない場合は「ない」と正直に伝える</li>
+          <li>調査官の質問を最後まで聞いてから答える</li>
+          <li>提示できない書類はその理由を説明する</li>
+          <li>メモを取り、やりとりを記録に残す</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <h4>DON'T - やらないこと・言わないこと</h4>
+        <ul>
+          <li>質問に必要以上の推測や余談を付け加えて話す</li>
+          <li>「たぶん」「だいたい」で曖昧に答える</li>
+          <li>その場で即断して「修正します」と約束する</li>
+          <li>感情的になる・反論を急ぐ</li>
+          <li>閲覧状況を把握しないまま、何を確認されたか記録しない</li>
+          <li>コピー対象・目的を確認しないまま資料を渡す</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-info">
+      <strong>「確認してから回答します」は最強の回答</strong>：当日その場で答えられないことは、後日書面や電話で回答すれば問題ない。その場で焦って不正確な回答をするほうが後々厄介になる。
+    </div>
+
+    <h3>調査官との接し方</h3>
+    <div class="box-highlight">
+      <p>調査官は「敵」ではなく「申告内容を確認しに来た公務員」。税務調査は法律に基づいた手続きであり、双方が法令・事実・証拠を軸に対話する場。誠実・協力的に対応しつつ、<strong>指摘に対しては根拠を確認し、法令・事実関係に照らして判断する</strong>。高圧的な態度は逆効果。落ち着いた対応が最も有効。</p>
+    </div>
+
+    <h3>調査当日の役割分担</h3>
+    <table>
+      <thead>
+        <tr><th>担当</th><th>主な役割</th><th>注意点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>クライアント<br>（社長・経理担当）</td>
+          <td>事業内容・取引の背景説明</td>
+          <td>事前に「質問は税理士を通してください」と伝えておく。余計な発言を避けてもらう</td>
+        </tr>
+        <tr>
+          <td>担当者（スタッフ）</td>
+          <td>資料の提示・事実関係の説明・やりとりの記録</td>
+          <td>わからないことはその場で答えず「確認します」と返す。可能な限り同席し、閲覧資料を把握する</td>
+        </tr>
+        <tr>
+          <td>マネージャー</td>
+          <td>論点整理・指摘事項の評価・調査官との折衝</td>
+          <td>論点ごとに「認める／争う／持ち帰る」の仕分けを行う</td>
+        </tr>
+        <tr>
+          <td>パートナー（税理士）</td>
+          <td>最終判断・修正申告の可否・交渉</td>
+          <td>重要な判断は必ずパートナーに確認してから回答する</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 調査後 -->
+  <section id="after">
+    <h2>調査後の対応</h2>
+
+    <h3>指摘事項への対応パターン</h3>
+    <table>
+      <thead>
+        <tr><th>パターン</th><th>内容</th><th>対応</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-green">是認</span></td>
+          <td>問題なし。修正申告・更正なし</td>
+          <td>是認通知（口頭 or 書面）で完了確認</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">修正申告</span></td>
+          <td>指摘内容に納得した場合、自主的に修正申告</td>
+          <td>加算税は過少申告加算税（通常10%）。修正申告に同意するか慎重に判断</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">更正・決定</span></td>
+          <td>指摘に不服がある場合、税務署が職権で更正</td>
+          <td>異議申立 → 審査請求 → 税務訴訟の順で不服申立が可能（要確認）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-note">
+      <strong>修正申告は慎重に</strong>：修正申告に応じるかどうかは、法令・事実関係・証拠を整理したうえで判断する。指摘を受けた場合は、根拠条文・事実認定の根拠を確認し、必ず上位者と協議したうえで結論を出す。一度修正申告すると取り消しが非常に難しいため、「言われたから応じる」ではなく「根拠を確認して納得したうえで応じる」のが正しい姿勢。
+    </div>
+
+    <h3>加算税・延滞税の種類（参考）</h3>
+    <table>
+      <thead>
+        <tr><th>種類</th><th>発生条件</th><th>税率目安</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>過少申告加算税</td><td>申告が少なかった場合</td><td>10%（大幅過少は15%）</td></tr>
+        <tr><td>無申告加算税</td><td>申告期限を過ぎた場合</td><td>15%（調査後は20%）</td></tr>
+        <tr><td>重加算税</td><td>仮装・隠ぺいがあった場合</td><td>35%（無申告は40%）</td></tr>
+        <tr><td>延滞税</td><td>納付が遅れた場合</td><td>年利2.4%〜8.7%程度（要確認）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>完了後の社内フィードバック</h3>
+    <ul class="checklist">
+      <li>調査で指摘された論点・弱点を書面でまとめ、同じクライアントが来期以降に同じ指摘を受けないよう改善する</li>
+      <li>類似論点を抱える他のクライアントにも横展開する（守秘義務の範囲内で）</li>
+      <li>調査対応の記録を残す（日時・調査官名・指摘事項・対応内容）</li>
+    </ul>
+  </section>
+
+  <!-- 心構え -->
+  <section id="mindset">
+    <h2>初めて対応するメンバーへの心構え</h2>
+
+    <div class="box-summary">
+      <p>税務調査は「試験」ではなく「対話」。正しい申告を丁寧に説明できれば、それだけで十分。以下は、初回対応でつまずきやすいポイントを経験則からまとめたもの。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>1. 「知らない」「確認します」は弱さではない</strong><br>
+      <p style="margin-top:6px;">その場で答えられないことを無理に答えようとするほうがリスク。「後日確認してご連絡します」と言えば調査官も普通に受け入れる。誠実な対応として評価されることが多い。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>2. 質問に正確に答える、それ以上は付け加えない</strong><br>
+      <p style="margin-top:6px;">質問に対して正確に回答し、必要以上に推測や余談を付け加えない。「全部隠す」のではなく「聞かれたことに正確に答える」のが正しいスタンス。自分から余計な情報を話すのは誤解を招くことがあるため、回答は質問の範囲内に収める。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>3. 書類がない＝アウト、ではない</strong><br>
+      <p style="margin-top:6px;">書類が見当たらない場合でも、取引の実態を他の証拠（メール・通帳・メモ等）で説明できることはある。最初から諦めず、代替証拠を探す。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>4. 調査官も「説明してほしい」と思っている</strong><br>
+      <p style="margin-top:6px;">調査官が帳簿を見て疑問を持つのは、情報が足りていないから。背景・理由を丁寧に説明することで疑問が解消するケースは多い。防御的になりすぎず、説明者として向き合う。</p>
+    </div>
+
+    <div class="box-highlight">
+      <strong>5. 一人で完結しようとしない</strong><br>
+      <p style="margin-top:6px;">対応に迷ったら、その場で「確認してからご連絡します」と言って時間をもらい、すぐに上位者に相談する。特に「修正申告に応じるかどうか」は必ず組織として判断する。</p>
+    </div>
+
+    <h3>「押された」と感じたとき</h3>
+    <div class="box-note">
+      調査官から「これは修正申告が必要です」と強く言われても、その場で同意する必要はない。「ご指摘の内容は持ち帰り、確認した上でご回答します」が正しい回答。感情的な圧力と法的な根拠は別物なので、落ち着いて区別する。
+    </div>
+  </section>
+
+  <!-- よくある場面 -->
+  <section id="qa">
+    <h2>よくある場面と対応例</h2>
+
+    <h3>Q. 調査官が突然「通帳を全部見せてほしい」と言ってきた</h3>
+    <div class="box-info">
+      <strong>A.</strong> 税務調査では、調査官は質問検査権（国税通則法第74条の2等）に基づいて帳簿・書類の提示を求めることができる。「見せなくていい」とは言い切れないため、「確認してからご対応します」と伝えて時間をもらい、担当パートナーに連絡する。調査対象との関連性・必要性を確認したうえで、提示方法・範囲を担当税理士と相談して対応する。
+    </div>
+
+    <h3>Q. 「この経費は認められません」と言われた</h3>
+    <div class="box-info">
+      <strong>A.</strong> その場で「修正します」とは言わない。「根拠条文を教えていただけますか」「書面でいただけますか」と確認する。持ち帰って根拠を調べ、反論できる場合は対応する。
+    </div>
+
+    <h3>Q. 「これは重加算税になりますよ」と言われた</h3>
+    <div class="box-info">
+      <strong>A.</strong> 重加算税の適用には、仮装・隠蔽の事実認定が必要（要確認）。単純な計上ミスや法令解釈の相違では適用要件を満たさないケースが多い。適用要件を十分に確認し、事実関係を整理したうえで、パートナーと対応方針を判断する。
+    </div>
+
+    <h3>Q. 調査官が帳簿をコピーしたいと言ってきた</h3>
+    <div class="box-info">
+      <strong>A.</strong> 調査実務においてコピーの取得は一般的に行われる。対応する際は、コピーする資料の名称・目的・範囲を確認し、何をコピーしたかを必ずリスト化して自分たちも控えを残す。後から「そんな書類は渡していない」とならないよう記録管理が重要。
+    </div>
+
+    <h3>Q. 調査が終わったのに、いつまでも連絡が来ない</h3>
+    <div class="box-info">
+      <strong>A.</strong> 調査終了から是認通知・修正申告の協議まで数週間〜数か月かかることは珍しくない。一定期間経過後は税務署に進捗確認の連絡を入れてよい。
+    </div>
+
+    <h3>Q. クライアントが調査官に直接しゃべりすぎている</h3>
+    <div class="box-info">
+      <strong>A.</strong> 事前にクライアントに「質問は税理士を通してください」と伝えておくことが重要。当日、担当者として同席し、クライアントが不用意な発言をしそうな場面では自然に会話をインターセプトする。
+    </div>
+  </section>
+
+  <div style="text-align:center; color:#aaa; font-size:11px; margin-top:40px; padding-top:20px; border-top:1px solid #e0e0e0;">
+    本資料は一般的な任意調査（法人税・消費税）を想定した実務ガイドです。個別案件の判断は必ず担当パートナーに確認してください。<br>
+    法令の条文番号・税率等は要確認事項を含みます。最新の税法・通達を必ず参照のこと。
+  </div>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40px 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ミクステンド株式会社 企業リサーチ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f7f7f7;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1a1a1a;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 12px;
+      padding: 14px 10px;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; border-bottom-color: #fff; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 920px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* ===== HEADER ===== */
+    .report-header {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      border-left: 5px solid #1a1a1a;
+    }
+    .report-header .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .report-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .report-header .meta { font-size: 12px; color: #666; }
+
+    /* ===== SECTION ===== */
+    section { margin-bottom: 40px; scroll-margin-top: 56px; }
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    h3 { font-size: 14px; font-weight: 700; margin: 20px 0 8px; }
+    p { margin-bottom: 10px; }
+
+    /* ===== BOXES ===== */
+    .box-summary {
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .box-summary p { color: #ddd; margin-bottom: 0; }
+    .box-summary strong { color: #fff; }
+
+    .box-highlight {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+
+    .box-note {
+      background: #fffde7;
+      border-left: 4px solid #f9a825;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+    }
+
+    .box-info {
+      background: #e8f4fd;
+      border-left: 4px solid #1976d2;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+    }
+
+    /* ===== TABLE ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      font-size: 12.5px;
+    }
+    th {
+      background: #efefef;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid #ddd;
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    tr:last-child td { border-bottom: none; }
+
+    /* ===== BADGES ===== */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin-right: 4px;
+    }
+    .badge-green  { background: #e6f4ea; color: #2e7d32; }
+    .badge-yellow { background: #fff8e1; color: #f57f17; }
+    .badge-blue   { background: #e3f2fd; color: #1565c0; }
+    .badge-gray   { background: #f0f0f0; color: #555; }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 18px 16px;
+      text-align: center;
+      border: 1px solid #e8e8e8;
+    }
+    .kpi-card .kpi-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+    .kpi-card .kpi-value { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+    .kpi-card .kpi-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+    /* ===== TIMELINE ===== */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #ddd;
+    }
+    .timeline-item { position: relative; margin-bottom: 18px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px #1a1a1a;
+    }
+    .timeline-year { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 2px; }
+    .timeline-text { font-size: 13px; }
+
+    /* ===== SERVICE CARDS ===== */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .service-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 18px 16px;
+      border: 1px solid #e8e8e8;
+    }
+    .service-card .service-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .service-card .service-tag { margin-bottom: 8px; }
+    .service-card p { font-size: 12px; color: #555; margin-bottom: 0; }
+
+    /* ===== PRINT ===== */
+    @media print {
+      nav { display: none; }
+      body { background: #fff; }
+      .container { padding: 0; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 16px 60px; }
+      .report-header { padding: 20px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#overview">会社概要</a>
+  <a href="#services">サービス</a>
+  <a href="#metrics">主要指標</a>
+  <a href="#history">沿革</a>
+  <a href="#finance">財務・資金</a>
+  <a href="#people">組織・人材</a>
+  <a href="#tech">技術スタック</a>
+  <a href="#summary">総評</a>
+</nav>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="label">企業リサーチレポート</div>
+    <h1>ミクステンド株式会社</h1>
+    <div class="meta">作成日：2026年7月21日&nbsp;&nbsp;|&nbsp;&nbsp;情報源：公式サイト・各種公開情報</div>
+  </div>
+
+  <!-- 1. 会社概要 -->
+  <section id="overview">
+    <h2>1. 会社概要</h2>
+
+    <div class="box-summary">
+      <strong>一言まとめ：</strong>
+      <p>リクルートの新規事業「調整さん」をスピンアウトして創業した、日程調整特化のウェブサービス企業。プライベート向け（月間MAU 800万人）とビジネス向け（登録40万人超）の2本柱で運営。</p>
+    </div>
+
+    <table>
+      <tr><th style="width:30%">項目</th><th>内容</th></tr>
+      <tr><td>会社名</td><td>ミクステンド株式会社（英: MIXTEND Inc.）</td></tr>
+      <tr><td>設立</td><td>2018年2月13日</td></tr>
+      <tr><td>代表取締役</td><td>北野 智大</td></tr>
+      <tr><td>本社</td><td>東京都港区赤坂3丁目17-3 H1O赤坂1015</td></tr>
+      <tr><td>大阪オフィス</td><td>大阪府大阪市北区大深町6番38号 グラングリーン大阪北館 JAMBASE6階</td></tr>
+      <tr><td>電話番号</td><td>03-6772-8990（平日10〜17時）</td></tr>
+      <tr><td>資本金</td><td>300万円</td></tr>
+      <tr><td>従業員数</td><td>約21名（正社員）</td></tr>
+      <tr><td>法人番号</td><td>9122001031342</td></tr>
+      <tr><td>ミッション</td><td>「はじまりをもっと近くに」</td></tr>
+      <tr><td>公式サイト</td><td>https://mixtend.com/</td></tr>
+    </table>
+
+    <div class="box-info">
+      <strong>ミッション詳細：</strong>世の中の複雑で面倒な仕組みを、プロダクトやテクノロジーによってよりシンプルにし、はじまりのハードルをなくしていくこと。もっと人と人が出会いやすい、きっかけが生まれやすい豊かな社会の実現を目指す。
+    </div>
+  </section>
+
+  <!-- 2. サービス -->
+  <section id="services">
+    <h2>2. 主要サービス</h2>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="service-name">調整さん</div>
+        <div class="service-tag">
+          <span class="badge badge-green">個人向け</span>
+          <span class="badge badge-gray">無料</span>
+        </div>
+        <p>ログイン不要で使える日程調整ツール。飲み会・旅行・イベントなど幅広い場面で利用される国内最大級のサービス。月間MAU 800万人超。</p>
+      </div>
+      <div class="service-card">
+        <div class="service-name">TimeRex（タイムレックス）</div>
+        <div class="service-tag">
+          <span class="badge badge-blue">ビジネス向け</span>
+          <span class="badge badge-yellow">有料SaaS</span>
+        </div>
+        <p>カレンダー連携・自動提案・Web会議URL自動発行まで対応した日程調整自動化SaaS。登録ユーザー40万人超。商談・採用・CSに活用。</p>
+      </div>
+      <div class="service-card">
+        <div class="service-name">調整さんカレンダー</div>
+        <div class="service-tag">
+          <span class="badge badge-blue">ビジネス向け</span>
+        </div>
+        <p>Googleカレンダーと連携し、空き時間だけを表示できる予約受付システム。スケジュール調整に特化したシンプルな設計。</p>
+      </div>
+      <div class="service-card">
+        <div class="service-name">調整さんwith</div>
+        <div class="service-tag">
+          <span class="badge badge-gray">メディア</span>
+        </div>
+        <p>調整さんチームが運営するオウンドメディア。飲み会・歓送迎会・お出かけ情報などを発信。サービス利用者の拡大に寄与。</p>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <strong>ビジネスモデルの強み：</strong>プライベートでは「調整さん」、仕事では「TimeRex」という棲み分けで、個人〜法人まで日程調整ニーズをワンストップでカバー。将来的には両サービスのノウハウを活かしたスケジュールマネジメント全般への展開も視野に入れている。
+    </div>
+  </section>
+
+  <!-- 3. 主要指標 -->
+  <section id="metrics">
+    <h2>3. 主要指標</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">調整さん 月間MAU</div>
+        <div class="kpi-value">800万人<span style="font-size:14px">+</span></div>
+        <div class="kpi-sub">国内最大級</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">TimeRex 登録ユーザー</div>
+        <div class="kpi-value">40万人<span style="font-size:14px">+</span></div>
+        <div class="kpi-sub">2026年時点</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">TimeRex 成長率</div>
+        <div class="kpi-value">2.2倍</div>
+        <div class="kpi-sub">2023年 前年比</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">調整さん 累計ユーザー</div>
+        <div class="kpi-value">1,200万人<span style="font-size:14px">+</span></div>
+        <div class="kpi-sub">累計</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">TimeRex 新機能追加</div>
+        <div class="kpi-value">155件</div>
+        <div class="kpi-sub">2023年実績</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">従業員数</div>
+        <div class="kpi-value">約21名</div>
+        <div class="kpi-sub">正社員</div>
+      </div>
+    </div>
+
+    <div class="box-info">
+      <strong>売上・ARR等の財務数値：</strong>非公開。上場企業でなく、外部調達も公式には明示していないため、詳細な財務数値は入手困難。ただしユーザー数・成長率から見てTimeRexは順調に伸長していると推察される。
+    </div>
+  </section>
+
+  <!-- 4. 沿革 -->
+  <section id="history">
+    <h2>4. 沿革</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2006年8月</div>
+        <div class="timeline-text">株式会社リクルートホールディングスの新規事業として「調整さん」誕生</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2018年2月</div>
+        <div class="timeline-text">調整さん担当だった北野智大氏がスピンアウトし、<strong>ミクステンド株式会社を創業</strong>。「調整さん」と関連事業を引き継ぐ</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2020年1月</div>
+        <div class="timeline-text">ビジネス向け日程調整自動化SaaS「<strong>TimeRex</strong>」の提供を開始</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2023年</div>
+        <div class="timeline-text">TimeRexのWeb会議日程調整回数が<strong>前年比2.2倍</strong>に拡大。年間155件の機能追加・改善を実施。TimeRex累計25万人突破</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024年〜</div>
+        <div class="timeline-text">TimeRex登録ユーザー数がさらに拡大し<strong>40万人超</strong>に。調整さんのMAUも800万人を超え、国内最大規模を維持</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2026年</div>
+        <div class="timeline-text">大阪オフィスをグラングリーン大阪北館に開設。技術スタック2026年版を公開し、Incremental Rolloutなど開発体制を強化</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 財務・資金調達 -->
+  <section id="finance">
+    <h2>5. 財務・資金調達</h2>
+
+    <table>
+      <tr><th style="width:30%">項目</th><th>内容</th></tr>
+      <tr><td>資本金</td><td>300万円</td></tr>
+      <tr><td>外部調達状況</td><td>基本的に非公開。代表・北野氏は「投資家からの出資を受けていない」と発言した時期もあり</td></tr>
+      <tr><td>参考情報</td><td>Wantedly上では「$1,000,000以上の資金調達」と記載あり（詳細不明）</td></tr>
+      <tr><td>上場方針</td><td>「上場・バイアウトの可能性を否定せず」（代表コメント）。ゴール設定は現在しないスタンス</td></tr>
+      <tr><td>売上・ARR</td><td>非公開</td></tr>
+    </table>
+
+    <div class="box-note">
+      <strong>特記事項：</strong>リクルートのスピンアウト案件のため、設立時点でユーザーベース（調整さん）を持ってスタートしている点が一般的なスタートアップと異なる。外部調達に依存せずプロダクト収益で成長してきた可能性が高い。
+    </div>
+  </section>
+
+  <!-- 6. 組織・人材 -->
+  <section id="people">
+    <h2>6. 組織・人材</h2>
+
+    <h3>代表プロフィール</h3>
+    <div class="box-highlight">
+      <strong>北野 智大（きたの ともひろ）</strong><br>
+      株式会社リクルートホールディングスにて「調整さん」の新規事業開発に携わった後、2018年に同事業のスピンアウトとしてミクステンド株式会社を創業。代表取締役に就任し現在に至る。
+    </div>
+
+    <h3>採用・組織</h3>
+    <table>
+      <tr><th style="width:30%">項目</th><th>内容</th></tr>
+      <tr><td>従業員数</td><td>約21名（正社員）</td></tr>
+      <tr><td>採用形態</td><td>正社員・フリーランス・副業エンジニア採用あり（paiza・Wantedly・ReDesigner等で掲載実績）</td></tr>
+      <tr><td>採用職種</td><td>エンジニア・デザイナー中心（プロダクト開発重視の体制）</td></tr>
+      <tr><td>オフィス</td><td>東京（赤坂）/ 大阪（グラングリーン大阪）の2拠点</td></tr>
+    </table>
+  </section>
+
+  <!-- 7. 技術スタック -->
+  <section id="tech">
+    <h2>7. 技術・開発方針</h2>
+
+    <div class="box-highlight">
+      2026年版の技術スタックを公式ブログで公開。ユーザー数増加に合わせた保守性・スケーラビリティの向上を重視している。
+    </div>
+
+    <h3>開発体制の特徴</h3>
+    <table>
+      <tr><th style="width:30%">取り組み</th><th>内容</th></tr>
+      <tr><td>テスト自動化</td><td>テスト自動化領域を継続的に拡大中</td></tr>
+      <tr><td>段階的リリース</td><td>全ユーザー一斉反映から「Incremental Rollout」プロセスへの移行を推進</td></tr>
+      <tr><td>コード最適化</td><td>ユーザー数増加に合わせ、コードレベルでの最適化を徹底</td></tr>
+      <tr><td>情報発信</td><td>Zenn上でミクステンド Tech Blog を運営。開発知見を継続的に公開</td></tr>
+    </table>
+
+    <div class="box-info">
+      詳細な技術スタック（言語・FW・インフラ等）は公式ブログ参照：<br>
+      <code>https://mixtend.com/blog/technology-stack2026/</code>
+    </div>
+  </section>
+
+  <!-- 8. 総評 -->
+  <section id="summary">
+    <h2>8. 総評・ポイント整理</h2>
+
+    <div class="box-summary">
+      <strong>リサーチサマリー</strong>
+      <p>「調整さん」という既存ユーザーベースを引き継いでスタートした稀有なスピンアウト企業。小規模（21名）ながらMAU 800万人のサービスを保有し、B2C〜B2BのSaaS展開に成功している。財務情報は非公開が多いが、外部調達に依存しないプロダクト主導の成長モデルと推察される。</p>
+    </div>
+
+    <h3>強み</h3>
+    <table>
+      <tr><th style="width:30%">ポイント</th><th>詳細</th></tr>
+      <tr>
+        <td><span class="badge badge-green">強み</span> 圧倒的ユーザー基盤</td>
+        <td>「調整さん」MAU 800万人という規模は、日本のスケジュール調整サービスとして業界トップクラス。ブランド認知が高い</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">強み</span> B2C〜B2B展開</td>
+        <td>個人（調整さん）→ 法人（TimeRex）という自然な導線が設計されており、ユーザーがライフステージを通じて使い続けるモデル</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">強み</span> スピンアウト基盤</td>
+        <td>リクルートからの事業引き継ぎにより、設立初日からユーザーと実績を保有。ゼロスタートのリスクがない</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-blue">注目</span> 少数精鋭</td>
+        <td>21名でMAU 800万人・登録40万人を運用。高い生産性を誇るプロダクト重視体制</td>
+      </tr>
+    </table>
+
+    <h3>留意点・課題</h3>
+    <table>
+      <tr><th style="width:30%">ポイント</th><th>詳細</th></tr>
+      <tr>
+        <td><span class="badge badge-yellow">留意</span> 財務情報の非公開</td>
+        <td>売上・ARR・利益率など財務数値は一切公開なし。外部からの実力評価が困難</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-yellow">留意</span> 競合環境</td>
+        <td>Calendly（海外）・スケコン・TimeTree等との競合。海外大手の日本進出リスクもあり</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-yellow">留意</span> 出口戦略の不透明さ</td>
+        <td>上場・バイアウトを「否定しない」としつつも明確なゴール設定なし。長期的な方向性が見えにくい</td>
+      </tr>
+    </table>
+
+    <div class="box-note">
+      <strong>情報の限界：</strong>本レポートは公開情報（公式サイト・PR TIMES・転職サイト等）をもとに作成。売上・詳細財務・投資家情報等は非公開のため入手できていない。より深掘りする場合は initial.inc・startup-db の有料プランや直接ヒアリングが有効。
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // スティッキーナビ セクション追従ハイライト
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

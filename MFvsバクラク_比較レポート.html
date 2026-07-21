@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFクラウド vs バクラク 機能・料金比較レポート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f7f7f7;
+  }
+
+  /* ===== STICKY NAV ===== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a1a1a;
+    display: flex;
+    gap: 4px;
+    padding: 0 24px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  nav a {
+    display: inline-block;
+    padding: 12px 14px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav a:hover, nav a.active {
+    color: #fff;
+    border-bottom-color: #fff;
+  }
+
+  /* ===== LAYOUT ===== */
+  .page { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ===== HEADER ===== */
+  .report-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px 40px 32px;
+    border-radius: 4px;
+    margin-bottom: 32px;
+  }
+  .report-header .label {
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .report-header .meta {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* ===== SECTION ===== */
+  section { margin-bottom: 48px; scroll-margin-top: 48px; }
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    border-left: 4px solid #1a1a1a;
+    padding-left: 12px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 24px 0 12px;
+    color: #333;
+  }
+
+  /* ===== BOXES ===== */
+  .box-summary {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .box-summary .title { font-size: 11px; color: #aaa; margin-bottom: 8px; letter-spacing: .05em; }
+  .box-summary p { font-size: 13px; line-height: 1.8; }
+
+  .box-highlight {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 18px 22px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .box-note {
+    background: #fffdf0;
+    border-left: 4px solid #f5c842;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: #555;
+  }
+  .box-info {
+    background: #f0f6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: #1e40af;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  thead tr { background: #3a3a3a; color: #fff; }
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(even) { background: #f7f7f7; }
+  tbody tr:nth-child(odd) { background: #fff; }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: top;
+  }
+  .cat-row td {
+    background: #eee !important;
+    font-weight: 700;
+    font-size: 12px;
+    color: #444;
+    padding: 7px 14px;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-green  { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-blue   { background: #dbeafe; color: #1e3a8a; }
+  .badge-gray   { background: #e5e7eb; color: #374151; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+
+  /* ===== SCORE CELLS ===== */
+  .score { font-size: 15px; }
+  .score.good   { color: #059669; }
+  .score.mid    { color: #d97706; }
+  .score.bad    { color: #dc2626; }
+
+  /* ===== SIZE CARDS ===== */
+  .size-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 600px) { .size-grid { grid-template-columns: 1fr; } }
+  .size-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 22px;
+  }
+  .size-card .size-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 6px;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+  .size-card .size-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 10px;
+  }
+  .size-card .recommend {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 10px 0 4px;
+  }
+  .size-card p { font-size: 12.5px; color: #444; line-height: 1.7; }
+  .size-card ul { margin: 8px 0 0 18px; font-size: 12.5px; color: #444; }
+  .size-card ul li { margin-bottom: 4px; }
+
+  /* ===== PRICE TABLE ===== */
+  .price-block {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .price-block .tool-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .price-block .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .plan-item {
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 14px;
+    text-align: center;
+  }
+  .plan-item .plan-name { font-size: 12px; color: #888; margin-bottom: 6px; }
+  .plan-item .plan-price { font-size: 18px; font-weight: 700; }
+  .plan-item .plan-unit { font-size: 11px; color: #888; margin-top: 2px; }
+  .plan-item .plan-note { font-size: 11px; color: #555; margin-top: 6px; }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    margin-top: 60px;
+    border-top: 1px solid #ddd;
+    padding-top: 16px;
+    font-size: 11px;
+    color: #aaa;
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    nav { display: none; }
+    body { background: #fff; }
+    .page { padding: 20px; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#overview">概要</a>
+  <a href="#function">機能比較</a>
+  <a href="#detail-debt">債権管理</a>
+  <a href="#detail-payable">債務管理</a>
+  <a href="#detail-transfer">振込</a>
+  <a href="#detail-expense">経費精算</a>
+  <a href="#price">料金</a>
+  <a href="#size">規模別推奨</a>
+  <a href="#summary">まとめ</a>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="label">TOOL COMPARISON REPORT</div>
+    <h1>MFクラウド vs バクラク<br>バックオフィス機能・料金比較</h1>
+    <div class="meta">対象：経営者向け説明資料 ／ 作成日：2026年7月17日 ／ 前提：MFクラウド会計 導入済み</div>
+  </div>
+
+  <!-- 1. 概要 -->
+  <section id="overview">
+    <h2>概要・比較の前提</h2>
+
+    <div class="box-summary">
+      <div class="title">このレポートについて</div>
+      <p>MFクラウド会計をすでに利用している会社が、<strong>債権管理・債務管理・振込・経費精算</strong>の各機能を追加導入する際に、「MFクラウドの関連プロダクトで統一する」か「バクラク（LayerX）に切り替える」かを検討するための比較資料です。規模感の目安として <strong>〜10名規模</strong> と <strong>〜100名規模</strong> の2パターンで整理しています。</p>
+    </div>
+
+    <div class="box-note">
+      <strong>料金・仕様は変動します：</strong>記載の料金・機能は作成時点（2026年7月）の公開情報をもとにしていますが、各社のプラン変更により異なる場合があります。導入前に必ず各社へ最新見積を確認してください。
+    </div>
+
+    <h3>比較対象プロダクト</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%">ツール</th>
+            <th style="width:20%">運営会社</th>
+            <th>対応する主なプロダクト</th>
+            <th style="width:15%">ポジション</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MFクラウド</strong></td>
+            <td>株式会社マネーフォワード</td>
+            <td>請求書（債権）／請求書受取（債務）／経費／Pay for Business（振込）</td>
+            <td><span class="badge badge-blue">統合エコシステム</span></td>
+          </tr>
+          <tr>
+            <td><strong>バクラク</strong></td>
+            <td>株式会社LayerX</td>
+            <td>請求書（受取・発行）／経費精算／申請／振込／電子帳簿保存</td>
+            <td><span class="badge badge-green">AI特化・中規模向け</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box-info">
+      <strong>大前提：MFクラウド会計との連携について</strong><br>
+      MFクラウドの各プロダクトはMFクラウド会計と同一プラットフォームのため、設定なしで自動仕訳連携が可能です。バクラクはMFクラウド会計とのAPI連携に対応していますが、初期マッピング設定が必要です。
+    </div>
+  </section>
+
+  <!-- 2. 機能比較（全体） -->
+  <section id="function">
+    <h2>機能比較 一覧</h2>
+
+    <div class="box-note">
+      凡例：<strong>◎ 優位</strong> ／ <strong>○ 対応</strong> ／ <strong>△ 限定的</strong> ／ <strong>✕ 非対応</strong>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36%">機能・項目</th>
+            <th style="width:28%">MFクラウド</th>
+            <th style="width:28%">バクラク</th>
+            <th style="width:8%">優位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-row"><td colspan="4">債権管理（請求書発行・入金管理）</td></tr>
+          <tr>
+            <td>請求書の作成・発行</td>
+            <td><span class="score good">○</span> テンプレート作成・PDF/メール送付</td>
+            <td><span class="score good">○</span> テンプレート作成・PDF/メール送付</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>請求書の自動作成（定期請求）</td>
+            <td><span class="score good">◎</span> 定期請求の自動化に強み</td>
+            <td><span class="score mid">○</span> 対応あり</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+          <tr>
+            <td>入金消込（銀行明細との照合）</td>
+            <td><span class="score good">◎</span> MFクラウド会計と同期・自動消込</td>
+            <td><span class="score mid">△</span> 連携設定が別途必要</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+          <tr>
+            <td>未入金リマインド</td>
+            <td><span class="score good">○</span> 自動リマインドメール</td>
+            <td><span class="score good">○</span> 自動リマインドメール</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>適格請求書（インボイス）対応</td>
+            <td><span class="score good">○</span> 対応済み</td>
+            <td><span class="score good">○</span> 対応済み</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+
+          <tr class="cat-row"><td colspan="4">債務管理（請求書受取・支払管理）</td></tr>
+          <tr>
+            <td>紙・PDF請求書の読み取り（AI-OCR）</td>
+            <td><span class="score good">○</span> AI-OCR対応</td>
+            <td><span class="score good">◎</span> AI精度が高く修正率が低い</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>承認ワークフロー</td>
+            <td><span class="score good">○</span> 多段階承認に対応</td>
+            <td><span class="score good">◎</span> 柔軟な条件分岐・代理承認</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>電子帳簿保存法 対応（受取書類）</td>
+            <td><span class="score good">○</span> 対応済み（タイムスタンプ等）</td>
+            <td><span class="score good">◎</span> 電帳法対応に特化した設計</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>仕訳の自動生成・MF会計への連携</td>
+            <td><span class="score good">◎</span> 自動連携・マッピング設定不要</td>
+            <td><span class="score good">○</span> API連携可（初期設定必要）</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+
+          <tr class="cat-row"><td colspan="4">振込</td></tr>
+          <tr>
+            <td>振込データ（全銀フォーマット）出力</td>
+            <td><span class="score good">○</span> FBデータ出力・ネットバンキングへ取込</td>
+            <td><span class="score good">○</span> FBデータ出力対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>振込の直接実行（口座から即時）</td>
+            <td><span class="score good">◎</span> MF Pay for Business で完結</td>
+            <td><span class="score good">◎</span> バクラク振込から直接実行</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>振込承認ワークフロー</td>
+            <td><span class="score mid">△</span> 基本的な承認のみ</td>
+            <td><span class="score good">◎</span> 金額・取引先による条件分岐承認</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>振込手数料</td>
+            <td>金融機関所定手数料</td>
+            <td>金融機関所定手数料（一部無料枠あり）※要確認</td>
+            <td><span class="badge badge-gray">要確認</span></td>
+          </tr>
+          <tr>
+            <td>対応金融機関数</td>
+            <td><span class="score good">◎</span> 主要銀行・ネット銀行 幅広く対応</td>
+            <td><span class="score good">○</span> 主要銀行対応（MFより少ない場合あり）</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+
+          <tr class="cat-row"><td colspan="4">経費精算</td></tr>
+          <tr>
+            <td>スマホでレシート撮影・読取</td>
+            <td><span class="score good">○</span> アプリ対応</td>
+            <td><span class="score good">○</span> アプリ対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>交通系IC自動読取</td>
+            <td><span class="score good">○</span> Suica/PASMOなど対応</td>
+            <td><span class="score good">○</span> 対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>承認ワークフロー</td>
+            <td><span class="score good">○</span> 多段階承認</td>
+            <td><span class="score good">◎</span> 条件分岐・代理承認・差し戻し追跡</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>法人カード連携</td>
+            <td><span class="score good">◎</span> MFクラウドカード（自社カード）連携</td>
+            <td><span class="score good">○</span> 主要法人カード連携</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+          <tr>
+            <td>仮払い・立替管理</td>
+            <td><span class="score good">○</span> 対応</td>
+            <td><span class="score good">○</span> 対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>会計仕訳への自動連携</td>
+            <td><span class="score good">◎</span> MF会計へ自動反映</td>
+            <td><span class="score good">○</span> API連携（初期設定必要）</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+
+          <tr class="cat-row"><td colspan="4">その他・共通</td></tr>
+          <tr>
+            <td>MFクラウド会計との連携</td>
+            <td><span class="score good">◎</span> 同一プラットフォーム・設定不要</td>
+            <td><span class="score good">○</span> API連携（初期マッピング設定必要）</td>
+            <td><span class="badge badge-blue">MF優位</span></td>
+          </tr>
+          <tr>
+            <td>権限管理（部署・役職別）</td>
+            <td><span class="score mid">○</span> 基本的な権限設定</td>
+            <td><span class="score good">◎</span> 細かなロール設定・部門管理</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>CSVデータエクスポート</td>
+            <td><span class="score good">○</span> 対応</td>
+            <td><span class="score good">○</span> 対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+          <tr>
+            <td>サポート体制</td>
+            <td><span class="score good">○</span> チャット・メール・電話（プランによる）</td>
+            <td><span class="score good">◎</span> 専任CSによる導入支援が手厚い</td>
+            <td><span class="badge badge-green">バクラク優位</span></td>
+          </tr>
+          <tr>
+            <td>スマホアプリ</td>
+            <td><span class="score good">○</span> iOS / Android 対応</td>
+            <td><span class="score good">○</span> iOS / Android 対応</td>
+            <td><span class="badge badge-gray">同等</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 債権管理 詳細 -->
+  <section id="detail-debt">
+    <h2>詳細：債権管理（請求書発行・入金管理）</h2>
+
+    <div class="size-grid">
+      <div class="box-highlight">
+        <h3 style="margin-top:0">MFクラウド請求書</h3>
+        <p>同一プラットフォームのため、<strong>発行した請求書が入金されると自動で仕訳が起票</strong>されMFクラウド会計に反映される。定期請求の自動化が充実しており、月次請求が多い業態に向いている。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>請求書作成〜PDF送付〜入金消込 がワンプラットフォーム</li>
+          <li>銀行明細と自動照合し未入金を一覧管理</li>
+          <li>郵送代行オプションあり</li>
+        </ul>
+      </div>
+      <div class="box-highlight">
+        <h3 style="margin-top:0">バクラク請求書発行</h3>
+        <p>請求書発行・管理機能として基本的な機能を網羅。MFクラウド請求書と大きな差はないが、<strong>入金消込をMFクラウド会計と連携するには別途設定が必要</strong>。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>テンプレート・一括発行対応</li>
+          <li>インボイス制度・電帳法対応</li>
+          <li>入金消込との連携はAPI経由</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-note">
+      MFクラウド会計がすでに入っている場合、<strong>債権管理はMFクラウド請求書が圧倒的に管理しやすい</strong>。入金消込〜仕訳まで自動で完結する点の工数差は大きい。
+    </div>
+  </section>
+
+  <!-- 4. 債務管理 詳細 -->
+  <section id="detail-payable">
+    <h2>詳細：債務管理（請求書受取・支払管理）</h2>
+
+    <div class="size-grid">
+      <div class="box-highlight">
+        <h3 style="margin-top:0">MFクラウド請求書受取</h3>
+        <p>受取請求書をAI-OCRで読み取り、承認ワークフローを通じて支払管理。MFクラウド会計への仕訳連携は自動。<strong>10名規模では十分すぎるほどの機能</strong>を持つ。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>AI-OCRで取引先・金額・期日を自動読取</li>
+          <li>2〜3段階の承認フロー設定</li>
+          <li>受取書類の電帳法保存に対応</li>
+        </ul>
+      </div>
+      <div class="box-highlight">
+        <h3 style="margin-top:0">バクラク請求書（受取）</h3>
+        <p>AI-OCRの精度・承認ワークフローの柔軟さでバクラクが上回る。<strong>部署が多く、複雑な承認経路が必要な100名前後の企業に強み</strong>。電帳法対応を専用設計で実装。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>AI-OCR精度が高く手修正が少ない</li>
+          <li>金額・取引先・部門による承認経路の条件分岐</li>
+          <li>代理承認・期限切れ自動エスカレーション</li>
+          <li>電帳法タイムスタンプ付与が自動</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-info">
+      <strong>ポイント：</strong>10名規模で承認者が1〜2名程度であれば、MFクラウドの承認フローで十分です。部署が複数あり「○○部長承認→経理承認→役員承認」のような複数経路が必要になる段階でバクラクの優位性が出てきます。
+    </div>
+  </section>
+
+  <!-- 5. 振込 詳細 -->
+  <section id="detail-transfer">
+    <h2>詳細：振込</h2>
+
+    <div class="size-grid">
+      <div class="box-highlight">
+        <h3 style="margin-top:0">MF Pay for Business（振込）</h3>
+        <p>請求書受取から振込まで MFクラウド上で完結。全銀フォーマットのFBデータ出力のほか、MF Pay for Business での直接振込にも対応。<strong>小規模ならシンプルで使いやすい</strong>。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>対応銀行数が多い（メガバン・地銀・ネット銀行）</li>
+          <li>承認後に振込指示が可能</li>
+          <li>MFクラウド会計への仕訳自動反映</li>
+        </ul>
+      </div>
+      <div class="box-highlight">
+        <h3 style="margin-top:0">バクラク振込</h3>
+        <p>振込指示に対しても複数段階の承認フローを設定可能。<strong>金額が高額な場合に役員追加承認</strong>が自動で入るなど、内部統制の観点で優れた設計。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>振込金額・取引先による承認経路の条件分岐</li>
+          <li>全銀FBデータ出力・直接振込に対応</li>
+          <li>振込明細をバクラク会計連携で自動仕訳</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <strong>内部統制の観点：</strong>月の支払総額が大きく（数千万以上）、「高額振込は社長承認必須」のルールを徹底したい企業はバクラク振込が向いています。10名程度で社長が全振込を把握できる規模ならMFで十分です。
+    </div>
+  </section>
+
+  <!-- 6. 経費精算 詳細 -->
+  <section id="detail-expense">
+    <h2>詳細：経費精算</h2>
+
+    <div class="size-grid">
+      <div class="box-highlight">
+        <h3 style="margin-top:0">MFクラウド経費</h3>
+        <p>スマホアプリでレシート撮影・交通系IC読取・承認〜会計連携まで一貫して対応。<strong>MFクラウド会計との自動連携が最大の強み</strong>で、経費精算後即座に仕訳が起票される。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>法人カード（MFクラウドカード）利用明細の自動取込</li>
+          <li>Suica/PASMO 定期区間控除にも対応</li>
+          <li>会計仕訳の自動生成・MF会計反映</li>
+        </ul>
+      </div>
+      <div class="box-highlight">
+        <h3 style="margin-top:0">バクラク経費</h3>
+        <p>承認ワークフローの柔軟さと、申請〜精算〜振込の一連の流れをバクラク内で完結できる点が強み。<strong>従業員が多く、申請件数が膨大になる環境での処理速度</strong>に定評がある。</p>
+        <ul style="margin:10px 0 0 16px; font-size:12.5px;">
+          <li>申請・承認・差し戻しの追跡がわかりやすい</li>
+          <li>部門・プロジェクト別の集計が得意</li>
+          <li>精算後の振込もバクラク振込と連携</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 料金 -->
+  <section id="price">
+    <h2>料金目安</h2>
+
+    <div class="box-note">
+      以下の料金はすべて <strong>目安・参考値</strong> です。プラン変更・ユーザー数加算・オプションにより大きく変わります。必ず各社へ最新の見積を依頼してください。（要確認）
+    </div>
+
+    <div class="price-block">
+      <div class="tool-name">MFクラウド <span class="badge badge-blue">バックオフィスプラン</span></div>
+      <p style="font-size:12.5px; margin-bottom:14px;">会計・請求書・請求書受取・経費・給与などをまとめて契約できる「バックオフィスプラン」が主流。個別プロダクトの単体契約も可。</p>
+      <div class="plan-grid">
+        <div class="plan-item">
+          <div class="plan-name">スモールビジネス</div>
+          <div class="plan-price">〜5万円</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">〜10名規模向け<br>主要機能をまとめて</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">ビジネス</div>
+          <div class="plan-price">〜10万円</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">30〜50名規模<br>承認・権限管理強化</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">エンタープライズ</div>
+          <div class="plan-price">個別見積</div>
+          <div class="plan-unit">要問合せ</div>
+          <div class="plan-note">100名超・大規模<br>専任サポート付</div>
+        </div>
+      </div>
+      <p style="font-size:11.5px; color:#888; margin-top:12px;">※ MFクラウド会計が既存契約の場合、バックオフィスプランに組み込む形で追加機能を付加するケースが多い。実際は既存契約との差額となる場合も。</p>
+    </div>
+
+    <div class="price-block">
+      <div class="tool-name">バクラク <span class="badge badge-green">プロダクト別契約</span></div>
+      <p style="font-size:12.5px; margin-bottom:14px;">バクラクは「請求書」「経費」「振込」「申請」などプロダクトを個別に契約する料金体系が基本。使う機能だけ契約可能。</p>
+      <div class="plan-grid">
+        <div class="plan-item">
+          <div class="plan-name">バクラク請求書（受取）</div>
+          <div class="plan-price">3万円〜</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">ユーザー数・件数に<br>より変動</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">バクラク経費</div>
+          <div class="plan-price">2万円〜</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">ユーザー数課金</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">バクラク振込</div>
+          <div class="plan-price">1万円〜</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">件数・金額により<br>変動する場合あり</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">フル導入（全プロダクト）</div>
+          <div class="plan-price">10万円〜</div>
+          <div class="plan-unit">月額（税抜）目安</div>
+          <div class="plan-note">100名規模での<br>参考値</div>
+        </div>
+      </div>
+      <p style="font-size:11.5px; color:#888; margin-top:12px;">※ バクラクは初期導入費用が別途かかる場合があります。専任CSによる導入支援が含まれるプランもあり。</p>
+    </div>
+
+    <h3>規模別コスト比較イメージ</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>規模</th>
+            <th>MFクラウド 月額目安</th>
+            <th>バクラク 月額目安</th>
+            <th>コスト差</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-yellow">〜10名規模</span></td>
+            <td>3〜5万円/月</td>
+            <td>5〜8万円/月</td>
+            <td>MFが<strong>2〜3万円/月ほど安い</strong>傾向</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">〜100名規模</span></td>
+            <td>8〜15万円/月</td>
+            <td>10〜20万円/月</td>
+            <td>差は縮まる・機能差で判断</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 8. 規模別推奨 -->
+  <section id="size">
+    <h2>規模別推奨</h2>
+
+    <div class="size-grid">
+      <div class="size-card">
+        <div class="size-label">SMALL TEAM</div>
+        <div class="size-title">〜10名規模</div>
+        <div class="recommend">推奨：MFクラウドで統一</div>
+        <p>MFクラウド会計をすでに使っている場合、追加プロダクトをMFで統一するのが最もコスパ・使い勝手ともに優れる。承認者が少なく複雑な経路設定が不要なため、バクラクの強みを活かしにくい。</p>
+        <ul>
+          <li>MFクラウド請求書（債権）</li>
+          <li>MFクラウド請求書受取（債務）</li>
+          <li>MFクラウド経費（経費精算）</li>
+          <li>MF Pay for Business（振込）</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-green">コスト安</span>
+          <span class="badge badge-blue">導入が簡単</span>
+          <span class="badge badge-gray">MF会計と自動連携</span>
+        </div>
+      </div>
+      <div class="size-card">
+        <div class="size-label">MEDIUM TEAM</div>
+        <div class="size-title">〜100名規模</div>
+        <div class="recommend">推奨：バクラクを軸に検討</div>
+        <p>承認フローが複雑になり、部署間の権限管理・高額振込の内部統制・電帳法対応の本格運用が求められる規模。バクラクのAI精度・柔軟なワークフロー・専任サポートの価値が出てくる。MFとのAPI連携設定は必要だが、初期投資として許容範囲。</p>
+        <ul>
+          <li>バクラク請求書（受取・債務管理）</li>
+          <li>バクラク経費（精算）</li>
+          <li>バクラク振込（承認フロー付）</li>
+          <li>請求書発行（債権）はMFが使いやすい場合も）</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-green">承認フロー柔軟</span>
+          <span class="badge badge-blue">電帳法対応強</span>
+          <span class="badge badge-yellow">初期設定必要</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-info">
+      <strong>切替タイミングの目安：</strong>「承認者が3名以上・部署が3つ以上・月の支払件数が50件超」あたりから、MFの承認フローに物足りなさを感じるケースが増えます。このラインに差し掛かったらバクラクの比較検討を始めるのがお勧めです。
+    </div>
+  </section>
+
+  <!-- 9. まとめ -->
+  <section id="summary">
+    <h2>まとめ・選択の判断軸</h2>
+
+    <div class="box-summary">
+      <div class="title">一言でいうと</div>
+      <p><strong>MFクラウド会計を使っている前提では、10名規模はMFで統一が正解。</strong>コストが安く、会計連携が自動で、導入もスムーズ。100名前後になり、承認フローの複雑さ・電帳法の本格対応・振込の内部統制が課題になってきたら、バクラクへの切替・並用を検討する。</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>判断軸</th>
+            <th>MFクラウドを選ぶ場合</th>
+            <th>バクラクを選ぶ場合</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>従業員規模</strong></td>
+            <td>〜30名程度まで</td>
+            <td>50名〜（特に100名超）</td>
+          </tr>
+          <tr>
+            <td><strong>承認経路</strong></td>
+            <td>シンプル（1〜2段階）</td>
+            <td>複雑（部署別・条件分岐あり）</td>
+          </tr>
+          <tr>
+            <td><strong>振込の内部統制</strong></td>
+            <td>社長1人で全振込を確認できる</td>
+            <td>高額振込の自動エスカレーションが必要</td>
+          </tr>
+          <tr>
+            <td><strong>電帳法対応の厳格さ</strong></td>
+            <td>基本的な保存対応で十分</td>
+            <td>大量書類を確実にタイムスタンプ処理したい</td>
+          </tr>
+          <tr>
+            <td><strong>コスト感</strong></td>
+            <td>とにかく月額を抑えたい</td>
+            <td>工数削減・ミス防止効果で投資回収できる</td>
+          </tr>
+          <tr>
+            <td><strong>MF会計との連携</strong></td>
+            <td>設定ゼロで自動連携したい</td>
+            <td>初期設定工数を許容できる</td>
+          </tr>
+          <tr>
+            <td><strong>AI-OCRへの期待</strong></td>
+            <td>多少の手修正は許容する</td>
+            <td>手修正をできる限りゼロにしたい</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box-note">
+      <strong>注意：</strong>このレポートは2026年7月時点の情報をもとにしています。各社のプラン・機能・料金は変更されることがあるため、最終判断の前に必ず各社の最新情報・デモを確認してください。
+    </div>
+  </section>
+
+  <div class="footer">
+    作成：SEVENRICH Accounting ／ 作成日：2026年7月17日 ／ 本資料は一般的な情報整理を目的としており、個別の導入推奨を保証するものではありません。
+  </div>
+
+</div>
+
+<script>
+  // sticky nav active highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
